@@ -1,4 +1,4 @@
-OpenStack-Ansible Glance
+OpenStack-Ansible Sahara
 ########################
 :tags: openstack, sahara, cloud, ansible
 :category: \*nix
