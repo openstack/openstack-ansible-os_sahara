@@ -1,0 +1,10 @@
+haproxy_service_configs:
+  - service:
+      haproxy_service_name: sahara_api
+      haproxy_backend_nodes: "{{ groups['sahara_api'] | default([]) }}"
+      haproxy_port: 8386
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "forwardfor"
+        - "httpchk /versions"
+        - "httplog"

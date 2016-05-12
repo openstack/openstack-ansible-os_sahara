@@ -1,0 +1,13 @@
+## Sahara
+sahara_service_port: 8386
+sahara_service_proto: http
+sahara_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(sahara_service_proto) }}"
+sahara_service_user_name: sahara
+sahara_service_project_name: service
+sahara_service_project_domain_id: default
+sahara_service_user_domain_id: default
+sahara_service_adminuri: "{{ sahara_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ sahara_service_port }}"
+sahara_service_adminurl: "{{ sahara_service_adminuri }}/v1.1/%(tenant_id)s"
+sahara_service_region: "{{ service_region }}"
+sahara_rabbitmq_userid: sahara
+sahara_rabbitmq_vhost: /sahara
