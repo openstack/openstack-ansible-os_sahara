@@ -1,0 +1,44 @@
+---
+- name: Drop Sahara Config(s)
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ sahara_system_user_name }}"
+    group: "{{ sahara_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "api-paste.ini.j2"
+      dest: "/etc/sahara/api-paste.ini"
+      config_overrides: "{{ sahara_api_paste_ini_overrides }}"
+      config_type: "ini"
+    - src: "sahara.conf.j2"
+      dest: "/etc/sahara/sahara.conf"
+      config_overrides: "{{ sahara_conf_overrides }}"
+      config_type: "ini"
+    - src: "policy.json.j2"
+      dest: "/etc/sahara/policy.json"
+      config_overrides: "{{ sahara_policy_overrides }}"
+      config_type: "json"
+  notify:
+    - Restart sahara api
+    - Restart sahara engine
+  tags:
+    - sahara-config
+
+- name: Get sahara command path
+  command: which sahara
+  register: sahara_command_path
+  when:
+    - not sahara_venv_enabled | bool
+  tags:
+    - sahara-command-bin
+
+- name: Set sahara command path
+  set_fact:
+    sahara_bin: "{{ sahara_command_path.stdout | dirname }}"
+  when:
+    - not sahara_venv_enabled | bool
+  tags:
+    - sahara-command-bin

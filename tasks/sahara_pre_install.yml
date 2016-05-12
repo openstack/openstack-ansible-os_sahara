@@ -1,0 +1,73 @@
+---
+- name: create the system group
+  group:
+    name: "{{ sahara_system_group_name }}"
+    state: "present"
+    system: "yes"
+  tags:
+    - sahara-group
+
+- name: Create the sahara system user
+  user:
+    name: "{{ sahara_system_user_name }}"
+    group: "{{ sahara_system_group_name }}"
+    comment: "{{ sahara_system_comment }}"
+    shell: "{{ sahara_system_shell }}"
+    system: "yes"
+    createhome: "yes"
+    home: "{{ sahara_system_user_home }}"
+  tags:
+    - sahara-user
+
+- name: Create sahara dir
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner|default(sahara_system_user_name) }}"
+    group: "{{ item.group|default(sahara_system_group_name) }}"
+    mode: "{{ item.mode|default('0755') }}"
+  with_items:
+    - { path: "/openstack", mode: "0755", owner: "root", group: "root" }
+    - { path: "/etc/sahara" }
+    - { path: "/var/cache/sahara" }
+    - { path: "{{ sahara_system_user_home }}" }
+  tags:
+    - sahara-dirs
+
+- name: Create sahara venv dir
+  file:
+    path: "{{ item.path }}"
+    state: directory
+  with_items:
+    - { path: "/openstack/venvs" }
+    - { path: "{{ sahara_venv_bin }}" }
+  when: sahara_venv_enabled | bool
+  tags:
+    - sahara-dirs
+
+- name: Test for log directory or link
+  shell: |
+    if [ -h "/var/log/sahara"  ]; then
+      chown -h {{ sahara_system_user_name }}:{{ sahara_system_group_name }} "/var/log/sahara"
+      chown -R {{ sahara_system_user_name }}:{{ sahara_system_group_name }} "$(readlink /var/log/sahara)"
+    else
+      exit 1
+    fi
+  register: log_dir
+  failed_when: false
+  changed_when: log_dir.rc != 0
+  tags:
+    - sahara-dirs
+    - sahara-logs
+
+- name: Create sahara log dir
+  file:
+    path: "/var/log/sahara"
+    state: directory
+    owner: "{{ sahara_system_user_name }}"
+    group: "{{ sahara_system_group_name }}"
+    mode: "0755"
+  when: log_dir.rc != 0
+  tags:
+    - sahara-dirs
+    - sahara-logs

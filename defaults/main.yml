@@ -1,0 +1,173 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+## Verbosity Options
+debug: False
+verbose: True
+
+sahara-dashboard_git_repo: https://git.openstack.org/openstack/sahara-dashboard
+sahara-dashboard_git_install_branch: stable/mitaka 
+sahara-dashboard_requirements_git_repo: https://git.openstack.org/openstack/requirements
+sahara_requirements_git_install_branch: stable/mitaka
+
+sahara_git_repo: https://git.openstack.org/openstack/sahara
+sahara_git_install_branch: stable/mitaka
+sahara_requirements_git_repo: https://git.openstack.org/openstack/requirements
+sahara_requirements_git_install_branch: stable/mitaka
+sahara_developer_mode: false
+sahara_developer_constraints:
+  - "git+{{ sahara_git_repo }}@{{ sahara_git_install_branch }}#egg=sahara"
+
+# Name of the virtual env to deploy into
+sahara_venv_tag: untagged 
+sahara_venv_bin: "/openstack/venvs/sahara-{{ sahara_venv_tag }}/bin"
+
+# Set this to enable or disable installing in a venv
+sahara_venv_enabled: true
+
+# The bin path defaults to the venv path however if installation in a
+#  venv is disabled the bin path will be dynamically set based on the
+#  system path used when the installing.
+sahara_bin: "{{ sahara_venv_bin }}"
+
+# Set the etc dir path where sahara is installed.
+#  This is used for role access to the db migrations.
+#  Example:
+#  sahara_etc_dir: "/usr/local/etc/sahara"
+sahara_venv_etc_dir: "{{ sahara_bin | dirname }}/etc/sahara"
+sahara_non_venv_etc_dir: "/usr/local/etc/sahara"
+sahara_etc_dir: "{{ (sahara_venv_enabled | bool) | ternary(sahara_venv_etc_dir, sahara_non_venv_etc_dir) }}"
+
+sahara_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/sahara.tgz
+
+sahara_db_config: /etc/sahara/sahara.conf
+
+# Enable/Disable Ceilometer
+sahara_ceilometer_enabled: False
+
+sahara_profiler_enabled: False
+sahara_fatal_deprecations: False
+
+## System info
+sahara_system_user_name: sahara
+sahara_system_group_name: sahara
+sahara_system_shell: /bin/false
+sahara_system_comment: sahara system user
+sahara_system_user_home: "/var/lib/{{ sahara_system_user_name }}"
+
+sahara_engine_host: "{{ internal_lb_vip_address }}"
+sahara_rpc_backend: sahara.openstack.common.rpc.impl_kombu
+
+## RabbitMQ info
+sahara_rabbitmq_userid: sahara
+sahara_rabbitmq_vhost: /sahara
+
+## DB info
+sahara_galera_database: sahara
+sahara_galera_user: sahara
+
+sahara_role_name: admin
+sahara_api_bind_address: 0.0.0.0
+sahara_api_service_port: 8386
+sahara_api_program_name: sahara-api
+sahara_engine_program_name: sahara-engine
+
+## Service Type and Data
+sahara_service_region: RegionOne
+sahara_service_name: sahara
+sahara_service_port: 8386 
+sahara_service_proto: http
+sahara_service_engine_proto: "{{ sahara_service_proto }}"
+sahara_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(sahara_service_proto) }}"
+sahara_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(sahara_service_proto) }}"
+sahara_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(sahara_service_proto) }}"
+sahara_service_type: data-processing
+sahara_service_description: "Sahara Data Processing Service"
+sahara_service_user_name: sahara
+sahara_service_project_name: service
+sahara_service_project_domain_id: default
+sahara_service_user_domain_id: default
+sahara_service_publicuri: "{{ sahara_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ sahara_service_port }}"
+sahara_service_publicurl: "{{ sahara_service_publicuri }}/v1.1/%(tenant_id)s"
+sahara_service_internaluri: "{{ sahara_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ sahara_service_port }}"
+sahara_service_internalurl: "{{ sahara_service_internaluri }}/v1.1/%(tenant_id)s"
+sahara_service_adminuri: "{{ sahara_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ sahara_service_port }}"
+sahara_service_adminurl: "{{ sahara_service_adminuri }}/v1.1/%(tenant_id)s"
+
+## Keystone authentication middleware
+sahara_keystone_auth_plugin: password
+
+## Sahara config
+sahara_use_floating_ips: False
+sahara_use_neutron: True
+sahara_use_namespaces: False
+sahara_plugins: vanilla,spark,cdh,ambari
+sahara_global_remote_threshold: 100
+sahara_cluster_remote_threshold: 70
+sahara_os_region_name: "{{ sahara_service_region }}"
+
+# If ``sahara_api_workers`` is unset the system will use half the number of available VCPUS to
+# compute the number of api workers to use.
+# sahara_api_workers: 16
+
+# If ``sahara_engine_workers`` is unset the system will use half the number of available VCPUS to
+# compute the number of api workers to use.
+# sahara_engine_workers: 16
+
+sahara_task_executor: taskflow
+sahara_digest_algorithm: sha256
+sahara_http_keepalive: True
+
+## Sahara policy
+sahara_policy_file: policy.json
+sahara_policy_default_rule: default
+sahara_policy_dirs: policy.d
+
+## Policy vars
+# Provide a list of access controls to update the default policy.json with. These changes will be merged
+# with the access controls in the default policy.json. E.g.
+#sahara_policy_overrides:
+#  "clusters:get_all": ""
+#  "clusters:create": ""
+
+sahara_service_in_ldap: False
+
+# Sahara packages that must be installed before anything else
+sahara_required_pip_packages:
+  - virtualenv
+  - virtualenv-tools
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
+  - httplib2
+
+# Common pip packages
+sahara_pip_packages:
+  - sahara
+  - keystonemiddleware
+  - PyMySQL
+  - python-memcached
+  - pycrypto
+  - python-saharaclient
+  - python-keystoneclient
+  - warlock
+
+## Service Names
+sahara_service_names:
+  - "sahara-api"
+  - "sahara-engine"
+
+## Tunable overrides
+sahara_api_paste_ini_overrides: {}
+sahara_conf_overrides: {}
+sahara_policy_overrides: {}

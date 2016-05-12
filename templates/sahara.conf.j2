@@ -1,0 +1,74 @@
+# {{ ansible_managed }}
+
+{% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
+{% set api_threads = _api_threads if _api_threads > 0 else 1 %}
+
+[DEFAULT]
+verbose = {{ verbose }}
+debug = {{ debug }}
+log_file = /var/log/sahara/sahara.log
+fatal_deprecations = {{ sahara_fatal_deprecations }}
+host = {{ sahara_api_bind_address }}
+port = {{ sahara_api_service_port }}
+workers = {{ sahara_api_workers | default(api_threads) }}
+use_floating_ips = {{ sahara_use_floating_ips }}
+use_neutron = {{ sahara_use_neutron }}
+use_namespaces = {{ sahara_use_namespaces }}
+plugins = {{ sahara_plugins }}
+global_remote_threshold = {{ sahara_global_remote_threshold }}
+cluster_remote_threshold = {{ sahara_cluster_remote_threshold }}
+os_region_name = {{ sahara_os_region_name }}
+
+
+[database]
+connection = mysql+pymysql://{{ sahara_galera_user }}:{{ sahara_container_mysql_password }}@{{ sahara_galera_address }}/{{ sahara_galera_database }}?charset=utf8
+
+
+[keystone_authtoken]
+insecure = {{ keystone_service_internaluri_insecure | bool }}
+auth_type = {{ sahara_keystone_auth_plugin }}
+signing_dir = {{ sahara_system_user_home }}/cache/api
+auth_url = {{ keystone_service_adminurl }}
+auth_uri = {{ keystone_service_internaluri }}
+project_domain_id = {{ sahara_service_project_domain_id }}
+user_domain_id = {{ sahara_service_user_domain_id }}
+project_name = {{ sahara_service_project_name }}
+username = {{ sahara_service_user_name }}
+password = {{ sahara_service_password }}
+
+memcached_servers = {{ memcached_servers }}
+
+token_cache_time = 300
+revocation_cache_time = 60
+
+# if your memcached server is shared, use these settings to avoid cache poisoning
+memcache_security_strategy = ENCRYPT
+memcache_secret_key = {{ memcached_encryption_key }}
+
+# if your keystone deployment uses PKI, and you value security over performance:
+check_revocations_for_cached = False
+
+
+[oslo_policy]
+policy_file = {{ sahara_policy_file }}
+policy_default_rule = {{ sahara_policy_default_rule }}
+policy_dirs = {{ sahara_policy_dirs }}
+
+{% if sahara_ceilometer_enabled %}
+[oslo_messaging_notifications]
+driver = messagingv2
+{% endif %}
+
+
+[oslo_messaging_rabbit]
+rabbit_hosts = {{ rabbitmq_servers }}
+rabbit_port = {{ rabbitmq_port }}
+rabbit_userid = {{ sahara_rabbitmq_userid }}
+rabbit_password = {{ sahara_rabbitmq_password }}
+rabbit_virtual_host = {{ sahara_rabbitmq_vhost }}
+rabbit_use_ssl = {{ rabbitmq_use_ssl }}
+rabbit_notification_exchange = sahara
+rabbit_notification_topic = notifications
+
+[profiler]
+enabled = {{ sahara_profiler_enabled }}

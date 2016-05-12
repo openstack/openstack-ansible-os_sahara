@@ -1,0 +1,16 @@
+---
+- include: sahara_upstart_common_init.yml
+  vars:
+    program_name: "{{ sahara_api_program_name }}"
+    service_name: "{{ sahara_service_name }}"
+    system_user: "{{ sahara_system_user_name }}"
+    system_group: "{{ sahara_system_group_name }}"
+    service_home: "{{ sahara_system_user_home }}"
+
+- include: sahara_upstart_common_init.yml
+  vars:
+    program_name: "{{ sahara_engine_program_name }}"
+    service_name: "{{ sahara_service_name }}"
+    system_user: "{{ sahara_system_user_name }}"
+    system_group: "{{ sahara_system_group_name }}"
+    service_home: "{{ sahara_system_user_home }}"

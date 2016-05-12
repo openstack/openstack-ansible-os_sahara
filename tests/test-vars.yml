@@ -1,0 +1,62 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+external_lb_vip_address: 10.100.100.3
+galera_client_drop_config_file: false
+galera_root_password: "secrete"
+sahara_container_mysql_password: "SuperSecrete"
+sahara_developer_mode: true
+sahara_galera_address: 10.100.100.2
+sahara_galera_database: sahara
+sahara_git_install_branch: stable/mitaka
+sahara_profiler_hmac_key: "secrete"
+sahara_rabbitmq_password: "secrete"
+sahara_rabbitmq_userid: sahara
+sahara_rabbitmq_vhost: /sahara
+sahara_requirements_git_install_branch: stable/mitaka
+sahara_service_password: "secrete"
+sahara_venv_tag: "testing"
+internal_lb_vip_address: 10.100.100.3
+keystone_admin_tenant_name: admin
+keystone_admin_user_name: admin
+keystone_auth_admin_password: "SuperSecretePassword"
+keystone_container_mysql_password: "SuperSecrete"
+keystone_developer_mode: true
+keystone_galera_address: 10.100.100.2
+keystone_galera_database: keystone
+keystone_git_install_branch: stable/mitaka
+keystone_rabbitmq_password: "secrete"
+keystone_rabbitmq_port: 5671
+keystone_rabbitmq_servers: 10.100.100.2
+keystone_rabbitmq_use_ssl: true
+keystone_rabbitmq_userid: keystone
+keystone_rabbitmq_vhost: /keystone
+keystone_requirements_git_install_branch: stable/mitaka
+keystone_service_adminuri: "http://{{ internal_lb_vip_address }}:35357"
+keystone_service_adminuri_insecure: false
+keystone_service_adminurl: "{{ keystone_service_adminuri }}/v3"
+keystone_service_internaluri: "http://{{ internal_lb_vip_address }}:5000"
+keystone_service_internaluri_insecure: false
+keystone_service_internalurl: "{{ keystone_service_internaluri }}/v3"
+keystone_service_password: "secrete"
+keystone_venv_tag: "testing"
+memcached_encryption_key: "secrete"
+memcached_servers: 127.0.0.1
+openrc_os_auth_url: "http://127.0.0.1:5000/v3"
+openrc_os_domain_name: "Default"
+openrc_os_password: "{{ keystone_auth_admin_password }}"
+rabbitmq_port: 5671
+rabbitmq_servers: 10.100.100.2
+rabbitmq_use_ssl: true

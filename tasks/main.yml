@@ -1,0 +1,25 @@
+---
+- name: Gather variables for each operating system
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+    - "{{ ansible_distribution | lower }}.yml"
+    - "{{ ansible_os_family | lower }}.yml"
+  tags:
+    - always
+
+- include: sahara_pre_install.yml
+- include: sahara_install.yml
+- include: sahara_post_install.yml
+- include: sahara_upstart_init.yml
+
+- include: sahara_db_setup.yml
+  when: >
+    inventory_hostname == groups['sahara_all'][0]
+
+- include: sahara_service_setup.yml
+  when: >
+    inventory_hostname == groups['sahara_all'][0]
+
+- name: Flush handlers
+  meta: flush_handlers
