@@ -28,5 +28,5 @@
 # Install Keystone
 - include: test-install-keystone.yml
 
-# Install Glance
+# Install Sahara
 - include: test-install-sahara.yml
