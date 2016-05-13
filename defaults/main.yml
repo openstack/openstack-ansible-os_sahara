@@ -106,10 +106,18 @@ sahara_keystone_auth_plugin: password
 sahara_use_floating_ips: False
 sahara_use_neutron: True
 sahara_use_namespaces: False
-sahara_plugins: vanilla,spark,cdh,ambari
 sahara_global_remote_threshold: 100
 sahara_cluster_remote_threshold: 70
 sahara_os_region_name: "{{ sahara_service_region }}"
+
+# Other plugins can be added to the system by simply extending the list `sahara_plugin_base`.
+sahara_plugin_base:
+  - vanilla
+  - spark
+  - cdh
+  - ambari
+
+sahara_plugin_loaded_base: "{% for plugin in sahara_plugin_base %}{{ plugin }}{% if not loop.last %},{% endif %}{% endfor %}"
 
 # If ``sahara_api_workers`` is unset the system will use half the number of available VCPUS to
 # compute the number of api workers to use.
