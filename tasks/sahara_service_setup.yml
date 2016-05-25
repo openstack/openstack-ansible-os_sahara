@@ -103,3 +103,22 @@
     - sahara-api-setup
     - sahara-service-add
     - sahara-setup
+
+# Create proxy domain
+- name: Ensure sahara_proxy domain
+  keystone:
+    command: "ensure_domain"
+    domain_name: "{{ sahara_proxy_user_domain_name }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  register: add_sahara_proxy_domain
+  until: add_sahara_proxy_domain|success
+  retries: 5
+  delay: 10
+  when: sahara_use_domain_for_proxy_users|bool
+  tags:
+    - sahara-proxy-domain-add
+    - sahara-setup
