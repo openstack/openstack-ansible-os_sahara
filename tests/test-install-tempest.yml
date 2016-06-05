@@ -1,4 +1,6 @@
 ---
+# Copyright 2015, Rackspace US, Inc.
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -11,16 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Playbook for functional testing of sahara
+- name: Playbook for deploying tempest
   hosts: sahara_all
   user: root
-  gather_facts: false
-  tasks:
-    - name: Run tempest
-      shell: |
-        . {{ tempest_venv_bin }}/activate
-        {{ tempest_venv_bin | dirname }}/run_tempest.sh --no-virtual-env ${RUN_TEMPEST_OPTS} data_processing
-      environment:
-        RUN_TEMPEST_OPTS: "--serial"
+  gather_facts: true
+  roles:
+    - role: "os_tempest"
   vars_files:
     - test-vars.yml

@@ -17,6 +17,24 @@ infra1
 rabbitmq_all
 galera_all
 
+[nova_api_metadata]
+
+[nova_api_os_compute]
+openstack1
+
+[nova_cert]
+
+[nova_compute]
+
+[nova_conductor]
+
+[nova_console]
+
+[nova_scheduler]
+
+[nova_all:children]
+nova_api_os_compute
+
 [keystone_all]
 openstack1
 

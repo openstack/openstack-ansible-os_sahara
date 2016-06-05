@@ -25,7 +25,7 @@
     - name: Ensure rabbitmq user
       rabbitmq_user:
         user: "{{ sahara_rabbitmq_userid }}"
-        password: "{{ e_rabbitmq_password }}"
+        password: "{{ sahara_rabbitmq_password }}"
         vhost: "{{ sahara_rabbitmq_vhost }}"
         configure_priv: ".*"
         read_priv: ".*"
@@ -59,7 +59,5 @@
       when: inventory_hostname == groups['sahara_all'][0]
   roles:
     - role: "{{ rolename | basename }}"
-  post_tasks:
-    - include: test-sahara-functional.yml
   vars_files:
     - test-vars.yml

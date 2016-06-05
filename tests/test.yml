@@ -28,5 +28,14 @@
 # Install Keystone
 - include: test-install-keystone.yml
 
+# Install Nova
+- include: test-install-nova.yml
+
 # Install Sahara
 - include: test-install-sahara.yml
+
+# Install Tempest
+- include: test-install-tempest.yml
+
+# Test Sahara
+- include: test-sahara-functional.yml
