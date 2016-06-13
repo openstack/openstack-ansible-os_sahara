@@ -41,7 +41,7 @@ nova_container_mysql_password: "SuperSecrete"
 nova_developer_mode: true
 nova_galera_address: 10.100.100.2
 nova_galera_database: nova
-nova_git_install_branch: stable/mitaka
+nova_git_install_branch: master
 nova_keystone_auth_plugin: password
 nova_management_address: "10.100.100.3"
 nova_metadata_port: 8775
@@ -51,7 +51,7 @@ nova_novncproxy_vncserver_proxyclient_address: localhost
 nova_rabbitmq_password: "secrete"
 nova_rabbitmq_userid: nova
 nova_rabbitmq_vhost: /nova
-nova_requirements_git_install_branch: stable/mitaka
+nova_requirements_git_install_branch: master
 nova_service_adminurl: "http://{{ internal_lb_vip_address }}:8774"
 nova_service_password: "secrete"
 nova_service_project_domain_id: default
@@ -64,7 +64,7 @@ nova_venv_tag: "testing"
 nova_virt_type: qemu
 keystone_venv_tag: "testing"
 keystone_developer_mode: true
-keystone_git_install_branch: stable/mitaka
+keystone_git_install_branch: master
 keystone_service_password: "secrete"
 keystone_galera_address: 10.100.100.2
 keystone_galera_database: keystone
@@ -86,14 +86,14 @@ keystone_rabbitmq_password: "secrete"
 keystone_rabbitmq_use_ssl: false
 keystone_rabbitmq_port: 5672
 keystone_rabbitmq_servers: 10.100.100.2
-keystone_requirements_git_install_branch: stable/mitaka
+keystone_requirements_git_install_branch: master
 openrc_os_auth_url: "{{ keystone_service_internalurl }}"
 openrc_os_password: "{{ keystone_auth_admin_password }}"
 openrc_os_domain_name: "Default"
 sahara_venv_tag: "testing"
 sahara_developer_mode: true
-sahara_git_install_branch: stable/mitaka
-sahara_requirements_git_install_branch: stable/mitaka
+sahara_git_install_branch: master
+sahara_requirements_git_install_branch: master
 sahara_service_password: "secrete"
 sahara_galera_address: 10.100.100.2
 sahara_galera_database: sahara
