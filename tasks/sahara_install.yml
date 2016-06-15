@@ -71,7 +71,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: sahara_required_pip_packages
+  with_items: "{{ sahara_required_pip_packages }}"
   tags:
     - sahara-install
     - sahara-pip-packages
@@ -189,7 +189,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: sahara_pip_packages
+  with_items: "{{ sahara_pip_packages }}"
   when:
     - sahara_venv_enabled | bool
     - sahara_get_venv | failed or sahara_developer_mode | bool
@@ -208,7 +208,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: sahara_pip_packages
+  with_items: "{{ sahara_pip_packages }}"
   when:
     - not sahara_venv_enabled | bool
     - not sahara_developer_mode | bool

@@ -28,4 +28,4 @@
     name: "{{ item }}"
     state: "restarted"
     pattern: "{{ item }}"
-  with_items: sahara_service_names
+  with_items: "{{ sahara_service_names }}"
