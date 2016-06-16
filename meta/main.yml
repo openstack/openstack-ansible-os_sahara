@@ -1,14 +1,15 @@
 ---
 galaxy_info:
-  author: flaviodsr 
+  author: flaviodsr
   description: Installation and setup of sahara
   company: LSD/UFCG
   license: Apache2
-  min_ansible_version: 1.6.6
+  min_ansible_version: 1.9.4
   platforms:
     - name: Ubuntu
       versions:
         - trusty
+        - xenial
   categories:
     - cloud
     - python
