@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: sahara_upstart_common_init.yml
+- include: sahara_init_common.yml
   vars:
     program_name: "{{ sahara_api_program_name }}"
     service_name: "{{ sahara_service_name }}"
@@ -19,7 +19,7 @@
     system_group: "{{ sahara_system_group_name }}"
     service_home: "{{ sahara_system_user_home }}"
 
-- include: sahara_upstart_common_init.yml
+- include: sahara_init_common.yml
   vars:
     program_name: "{{ sahara_engine_program_name }}"
     service_name: "{{ sahara_service_name }}"
