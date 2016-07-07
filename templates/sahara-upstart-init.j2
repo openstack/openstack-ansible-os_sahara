@@ -23,9 +23,7 @@ pre-start script
   mkdir -p "/var/lock/{{ program_name }}"
   chown {{ system_user }}:{{ system_group }} "/var/lock/{{ program_name }}"
 
-  {% if sahara_venv_enabled | bool -%}
-  . {{ sahara_venv_bin }}/activate
-  {%- endif %}
+  . {{ sahara_bin }}/activate
 
 end script
 
