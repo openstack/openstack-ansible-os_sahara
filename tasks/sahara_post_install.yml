@@ -39,18 +39,3 @@
   tags:
     - sahara-config
 
-- name: Get sahara command path
-  command: which sahara
-  register: sahara_command_path
-  when:
-    - not sahara_venv_enabled | bool
-  tags:
-    - sahara-command-bin
-
-- name: Set sahara command path
-  set_fact:
-    sahara_bin: "{{ sahara_command_path.stdout | dirname }}"
-  when:
-    - not sahara_venv_enabled | bool
-  tags:
-    - sahara-command-bin

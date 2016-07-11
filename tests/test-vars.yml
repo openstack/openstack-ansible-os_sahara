@@ -102,7 +102,7 @@ sahara_container_mysql_password: "SuperSecrete"
 sahara_rabbitmq_password: "secrete"
 sahara_rabbitmq_userid: sahara
 sahara_rabbitmq_vhost: /sahara
-sahara_venv_bin: "/openstack/venvs/sahara-{{ sahara_venv_tag }}/bin"
+sahara_bin: "/openstack/venvs/sahara-{{ sahara_venv_tag }}/bin"
 tempest_developer_mode: True
 tempest_git_install_branch: master
 tempest_venv_tag: "{{ tempest_git_install_branch }}"

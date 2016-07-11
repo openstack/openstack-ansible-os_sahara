@@ -46,17 +46,6 @@
   tags:
     - sahara-dirs
 
-- name: Create sahara venv dir
-  file:
-    path: "{{ item.path }}"
-    state: directory
-  with_items:
-    - { path: "/openstack/venvs" }
-    - { path: "{{ sahara_venv_bin }}" }
-  when: sahara_venv_enabled | bool
-  tags:
-    - sahara-dirs
-
 - name: Test for log directory or link
   shell: |
     if [ -h "/var/log/sahara"  ]; then

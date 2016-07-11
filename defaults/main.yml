@@ -23,24 +23,10 @@ sahara_developer_constraints:
   - "git+{{ sahara_git_repo }}@{{ sahara_git_install_branch }}#egg=sahara"
 
 # Name of the virtual env to deploy into
-sahara_venv_tag: untagged 
-sahara_venv_bin: "/openstack/venvs/sahara-{{ sahara_venv_tag }}/bin"
+sahara_venv_tag: untagged
+sahara_bin: "/openstack/venvs/sahara-{{ sahara_venv_tag }}/bin"
 
-# Set this to enable or disable installing in a venv
-sahara_venv_enabled: true
-
-# The bin path defaults to the venv path however if installation in a
-#  venv is disabled the bin path will be dynamically set based on the
-#  system path used when the installing.
-sahara_bin: "{{ sahara_venv_bin }}"
-
-# Set the etc dir path where sahara is installed.
-#  This is used for role access to the db migrations.
-#  Example:
-#  sahara_etc_dir: "/usr/local/etc/sahara"
-sahara_venv_etc_dir: "{{ sahara_bin | dirname }}/etc/sahara"
-sahara_non_venv_etc_dir: "/usr/local/etc/sahara"
-sahara_etc_dir: "{{ (sahara_venv_enabled | bool) | ternary(sahara_venv_etc_dir, sahara_non_venv_etc_dir) }}"
+sahara_etc_dir: "{{ sahara_bin | dirname }}/etc/sahara" 
 
 sahara_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/sahara.tgz
 

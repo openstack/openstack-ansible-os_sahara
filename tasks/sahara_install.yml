@@ -82,7 +82,6 @@
     get_md5: False
   when:
     - not sahara_developer_mode | bool
-    - sahara_venv_enabled | bool
   register: local_venv_stat
   tags:
     - sahara-install
@@ -94,7 +93,6 @@
     return_content: True
   when:
     - not sahara_developer_mode | bool
-    - sahara_venv_enabled | bool
   register: remote_venv_checksum
   tags:
     - sahara-install
@@ -114,7 +112,6 @@
   register: get_venv
   when:
     - not sahara_developer_mode | bool
-    - sahara_venv_enabled | bool
     - (local_venv_stat.stat.exists == False or
         {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
   tags:
@@ -124,17 +121,15 @@
 - name: Set sahara get_venv fact
   set_fact:
     sahara_get_venv: "{{ get_venv }}"
-  when: sahara_venv_enabled | bool
   tags:
     - sahara-install
     - sahara-pip-packages
 
 - name: Remove existing venv
   file:
-    path: "{{ sahara_venv_bin | dirname }}"
+    path: "{{ sahara_bin | dirname }}"
     state: absent
   when:
-    - sahara_venv_enabled | bool
     - sahara_get_venv | changed
   tags:
     - sahara-install
@@ -142,12 +137,9 @@
 
 - name: Create sahara venv dir
   file:
-    path: "{{ sahara_venv_bin | dirname }}"
+    path: "{{ sahara_bin | dirname }}"
     state: directory
-  when:
-    - not sahara_developer_mode | bool
-    - sahara_venv_enabled | bool
-    - sahara_get_venv | changed
+  register: sahara_venv_dir
   tags:
     - sahara-install
     - sahara-pip-packages
@@ -155,25 +147,13 @@
 - name: Unarchive pre-built venv
   unarchive:
     src: "/var/cache/{{ sahara_venv_download_url | basename }}"
-    dest: "{{ sahara_venv_bin | dirname }}"
+    dest: "{{ sahara_bin | dirname }}"
     copy: "no"
   when:
     - not sahara_developer_mode | bool
-    - sahara_venv_enabled | bool
-    - sahara_get_venv | changed
+    - sahara_get_venv | changed or sahara_venv_dir | changed
   notify:
     - Restart sahara services
-  tags:
-    - sahara-install
-    - sahara-pip-packages
-
-- name: Update virtualenv path
-  command: >
-    virtualenv-tools --update-path=auto {{ sahara_venv_bin | dirname }}
-  when:
-    - not sahara_developer_mode | bool
-    - sahara_venv_enabled | bool
-    - sahara_get_venv | success
   tags:
     - sahara-install
     - sahara-pip-packages
@@ -182,7 +162,7 @@
   pip:
     name: "{{ item }}"
     state: present
-    virtualenv: "{{ sahara_venv_bin | dirname }}"
+    virtualenv: "{{ sahara_bin | dirname }}"
     virtualenv_site_packages: "no"
     extra_args: "{{ pip_install_options_fact }}"
   register: install_packages
@@ -191,7 +171,6 @@
   delay: 2
   with_items: "{{ sahara_pip_packages }}"
   when:
-    - sahara_venv_enabled | bool
     - sahara_get_venv | failed or sahara_developer_mode | bool
   notify:
     - Restart sahara services
@@ -199,21 +178,13 @@
     - sahara-install
     - sahara-pip-packages
 
-- name: Install pip packages (no venv)
-  pip:
-    name: "{{ item }}"
-    state: present
-    extra_args: "{{ pip_install_options_fact }}"
-  register: install_packages
-  until: install_packages|success
-  retries: 5
-  delay: 2
-  with_items: "{{ sahara_pip_packages }}"
+- name: Update virtualenv path
+  command: >
+    virtualenv-tools --update-path=auto {{ sahara_bin | dirname }}
   when:
-    - not sahara_venv_enabled | bool
     - not sahara_developer_mode | bool
-  notify:
-    - Restart sahara services
+    - sahara_get_venv | success
   tags:
     - sahara-install
     - sahara-pip-packages
+
