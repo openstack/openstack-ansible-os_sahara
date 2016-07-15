@@ -26,7 +26,7 @@ sahara_developer_constraints:
 sahara_venv_tag: untagged
 sahara_bin: "/openstack/venvs/sahara-{{ sahara_venv_tag }}/bin"
 
-sahara_etc_dir: "{{ sahara_bin | dirname }}/etc/sahara" 
+sahara_etc_dir: "{{ sahara_bin | dirname }}/etc/sahara"
 
 sahara_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/sahara.tgz
 
@@ -51,6 +51,9 @@ sahara_rpc_backend: sahara.openstack.common.rpc.impl_kombu
 ## RabbitMQ info
 sahara_rabbitmq_userid: sahara
 sahara_rabbitmq_vhost: /sahara
+sahara_rabbitmq_use_ssl: False
+sahara_rabbitmq_servers: 127.0.0.1
+sahara_rabbitmq_port: 5672
 
 ## DB info
 sahara_galera_database: sahara
@@ -65,7 +68,7 @@ sahara_engine_program_name: sahara-engine
 ## Service Type and Data
 sahara_service_region: RegionOne
 sahara_service_name: sahara
-sahara_service_port: 8386 
+sahara_service_port: 8386
 sahara_service_proto: http
 sahara_service_engine_proto: "{{ sahara_service_proto }}"
 sahara_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(sahara_service_proto) }}"
@@ -95,7 +98,7 @@ sahara_global_remote_threshold: 100
 sahara_cluster_remote_threshold: 70
 sahara_os_region_name: "{{ sahara_service_region }}"
 sahara_default_ntp_server: "pool.ntp.org"
- 
+
 sahara_use_domain_for_proxy_users: True
 sahara_proxy_user_domain_name: sahara_proxy
 sahara_proxy_user_role_names: _member_

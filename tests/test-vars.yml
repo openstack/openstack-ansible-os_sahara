@@ -110,6 +110,7 @@ sahara_galera_address: 10.100.100.2
 sahara_galera_database: sahara
 sahara_galera_user: sahara
 sahara_container_mysql_password: "SuperSecrete"
+sahara_rabbitmq_servers: 10.100.100.2
 sahara_rabbitmq_password: "secrete"
 sahara_rabbitmq_userid: sahara
 sahara_rabbitmq_vhost: /sahara

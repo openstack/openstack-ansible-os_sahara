@@ -70,12 +70,12 @@ driver = messagingv2
 
 
 [oslo_messaging_rabbit]
-rabbit_hosts = {{ rabbitmq_servers }}
-rabbit_port = {{ rabbitmq_port }}
+rabbit_hosts = {{ sahara_rabbitmq_servers }}
+rabbit_port = {{ sahara_rabbitmq_port }}
 rabbit_userid = {{ sahara_rabbitmq_userid }}
 rabbit_password = {{ sahara_rabbitmq_password }}
 rabbit_virtual_host = {{ sahara_rabbitmq_vhost }}
-rabbit_use_ssl = {{ rabbitmq_use_ssl }}
+rabbit_use_ssl = {{ sahara_rabbitmq_use_ssl }}
 rabbit_notification_exchange = sahara
 rabbit_notification_topic = notifications
 
