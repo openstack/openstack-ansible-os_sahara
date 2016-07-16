@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Perform baisc LXC host setup
+- name: Perform basic LXC host setup
   hosts: localhost
   pre_tasks:
     - name: Ensure root's new public ssh key is in authorized_keys
