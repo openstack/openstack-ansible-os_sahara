@@ -64,14 +64,13 @@
 
 - name: Install required pip packages
   pip:
-    name: "{{ item }}"
+    name: "{{ sahara_required_pip_packages | join(' ') }}"
     state: present
     extra_args: "{{ pip_install_options_fact }}"
   register: install_packages
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: "{{ sahara_required_pip_packages }}"
   tags:
     - sahara-install
     - sahara-pip-packages
@@ -160,7 +159,7 @@
 
 - name: Install pip packages (venv)
   pip:
-    name: "{{ item }}"
+    name: "{{ sahara_pip_packages | join(' ') }}"
     state: present
     virtualenv: "{{ sahara_bin | dirname }}"
     virtualenv_site_packages: "no"
@@ -169,7 +168,6 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: "{{ sahara_pip_packages }}"
   when:
     - sahara_get_venv | failed or sahara_developer_mode | bool
   notify:
