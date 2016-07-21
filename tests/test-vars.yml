@@ -28,7 +28,7 @@ glance_host: "{{ internal_lb_vip_address }}"
 glance_service_port: 9292
 cinder_backends_rbd_inuse: false
 cinder_ceph_client: cinder
-neutron_service_adminurl: http://{{ internal_lb_vip_address }}:9696
+neutron_service_adminurl: "http://{{ internal_lb_vip_address }}:9696"
 neutron_service_password: "secrete"
 neutron_service_project_name: service
 neutron_service_region: RegionOne
@@ -41,6 +41,7 @@ nova_container_mysql_password: "SuperSecrete"
 nova_developer_mode: true
 nova_galera_address: 10.100.100.2
 nova_galera_database: nova
+nova_glance_api_servers: "http://{{ internal_lb_vip_address }}:9292"
 nova_git_install_branch: master
 nova_glance_api_servers: "http://{{ glance_host }}:{{ glance_service_port }}"
 nova_keystone_auth_plugin: password
