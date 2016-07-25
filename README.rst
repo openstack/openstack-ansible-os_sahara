@@ -37,3 +37,4 @@ Example Playbook
         sahara_container_mysql_password: "SuperSecretePassword1"
         sahara_service_password: "SuperSecretePassword2"
         sahara_rabbitmq_password: "SuperSecretePassword3"
+
