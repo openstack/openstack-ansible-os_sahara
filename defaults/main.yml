@@ -165,6 +165,12 @@ sahara_service_names:
   - "sahara-api"
   - "sahara-engine"
 
+# This variable is used by the repo_build process to determine
+# which host group to check for members of before building the
+# pip packages required by this role. The value is picked up
+# by the py_pkgs lookup.
+sahara_role_project_group: sahara_all
+
 ## Tunable overrides
 sahara_api_paste_ini_overrides: {}
 sahara_conf_overrides: {}
