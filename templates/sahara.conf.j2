@@ -4,6 +4,9 @@
 {% set api_threads = _api_threads if _api_threads > 0 else 1 %}
 
 [DEFAULT]
+# Disable stderr logging
+use_stderr = False
+
 debug = {{ debug }}
 log_file = /var/log/sahara/sahara.log
 fatal_deprecations = {{ sahara_fatal_deprecations }}
