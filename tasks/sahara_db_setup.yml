@@ -16,3 +16,4 @@
               --config-file {{ sahara_db_config }} upgrade head"
   become: yes
   become_user: "{{ sahara_system_user_name }}"
+  changed_when: false

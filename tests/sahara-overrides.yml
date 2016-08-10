@@ -1,4 +1,6 @@
 ---
+# Copyright 2015, Rackspace US, Inc.
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -11,22 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Place the init script
-  template:
-    src: "sahara-upstart-init.j2"
-    dest: "/etc/init/{{ program_name }}.conf"
-    mode: "0644"
-    owner: "root"
-    group: "root"
-  register: upstart_init
-  notify:
-    - Restart sahara services
-
-- name: Reload init scripts
-  shell: |
-    initctl reload-configuration
-  when: upstart_init | changed
-  notify:
-    - Restart sahara services
-  tags:
-    - skip_ansible_lint  ## ANSIBLE0013 skipping lint because shell is required
+# There are currently no overrides required for the sahara role.
+# If you need sahara specific variable overries set them below and add
+# "-e @{toxinidir}/tests/sahara-overrides.yml \" to the ansible test run.

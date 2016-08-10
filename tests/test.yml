@@ -13,29 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Prepare the user ssh keys
-- include: test-prepare-keys.yml
-
-# Prepare the host
-- include: test-prepare-host.yml
-
-# Prepare the containers
-- include: test-prepare-containers.yml
+# Setup the host
+- include: common/test-setup-host.yml
 
 # Install RabbitMQ/MariaDB
-- include: test-install-infra.yml
+- include: common/test-install-infra.yml
 
 # Install Keystone
-- include: test-install-keystone.yml
+- include: common/test-install-keystone.yml
 
 # Install Nova
-- include: test-install-nova.yml
+- include: common/test-install-nova.yml
 
 # Install Sahara
-- include: test-install-sahara.yml
+- include: common/test-install-sahara.yml
 
 # Install Tempest
-- include: test-install-tempest.yml
+- include: common/test-install-tempest.yml
 
 # Test Sahara
 - include: test-sahara-functional.yml
