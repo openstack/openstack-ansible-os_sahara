@@ -1,16 +1,21 @@
 [all]
-localhost ansible_connection=local ansible_become=True
-infra1 ansible_host=10.100.100.2 ansible_become=True ansible_user=root
-openstack1 ansible_host=10.100.100.3 ansible_become=True ansible_user=root
+localhost
+infra1
+openstack1
+sahara1
 
 [all_containers]
 infra1
 openstack1
+sahara1
 
 [rabbitmq_all]
 infra1
 
 [galera_all]
+infra1
+
+[utility_all]
 infra1
 
 [service_all:children]
@@ -39,4 +44,4 @@ nova_api_os_compute
 openstack1
 
 [sahara_all]
-openstack1
+sahara1

@@ -12,15 +12,13 @@
 # limitations under the License.
 
 - name: Playbook for functional testing of sahara
-  hosts: sahara_all
+  hosts: utility_all
   user: root
   gather_facts: false
   tasks:
     - name: Run tempest
       shell: |
         . {{ tempest_venv_bin }}/activate
-        {{ tempest_venv_bin | dirname }}/run_tempest.sh --no-virtual-env ${RUN_TEMPEST_OPTS} data_processing
-      environment:
-        RUN_TEMPEST_OPTS: "--serial"
+        {{ tempest_venv_bin | dirname }}/run_tempest.sh --no-virtual-env --serial data_processing
   vars_files:
-    - test-vars.yml
+    - common/test-vars.yml
