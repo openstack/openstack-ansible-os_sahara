@@ -2,9 +2,9 @@ haproxy_service_configs:
   - service:
       haproxy_service_name: sahara_api
       haproxy_backend_nodes: "{{ groups['sahara_api'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_balance_alg: source
       haproxy_port: 8386
       haproxy_balance_type: http
       haproxy_backend_options:
-        - "forwardfor"
-        - "httpchk /versions"
-        - "httplog"
+        - "httpchk /healthcheck"

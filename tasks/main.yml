@@ -33,17 +33,33 @@
     - always
 
 - include: sahara_pre_install.yml
+  tags:
+    - sahara-install
+
 - include: sahara_install.yml
+  tags:
+    - sahara-install
+
 - include: sahara_post_install.yml
+  tags:
+    - sahara-install
+    - sahara-config
+
 - include: sahara_init.yml
+  tags:
+    - sahara-install
 
 - include: sahara_db_setup.yml
   when: >
     inventory_hostname == groups['sahara_all'][0]
+  tags:
+    - sahara-install
 
 - include: sahara_service_setup.yml
   when: >
     inventory_hostname == groups['sahara_all'][0]
+  tags:
+    - sahara-install
 
 - name: Flush handlers
   meta: flush_handlers

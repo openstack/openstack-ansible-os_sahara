@@ -14,9 +14,6 @@
 - include: sahara_install_apt.yml
   when:
     - ansible_pkg_mgr == 'apt'
-  tags:
-    - sahara-install
-    - sahara-apt-packages
 
 - name: Create developer mode constraint file
   copy:
@@ -27,9 +24,6 @@
       {% endfor %}
   when:
     - sahara_developer_mode | bool
-  tags:
-    - sahara-install
-    - sahara-pip-packages
 
 - name: Clone requirements git repository
   git:
@@ -40,27 +34,18 @@
     version: "{{ sahara_requirements_git_install_branch }}"
   when:
     - sahara_developer_mode | bool
-  tags:
-    - sahara-install
-    - sahara-pip-packages
 
 - name: Add constraints to pip_install_options fact for developer mode
   set_fact:
     pip_install_options_fact: "{{ pip_install_options|default('') }} --constraint /opt/developer-pip-constraints.txt --constraint /opt/requirements/upper-constraints.txt"
   when:
     - sahara_developer_mode | bool
-  tags:
-    - sahara-install
-    - sahara-pip-packages
 
 - name: Set pip_install_options_fact when not in developer mode
   set_fact:
     pip_install_options_fact: "{{ pip_install_options|default('') }}"
   when:
     - not sahara_developer_mode | bool
-  tags:
-    - sahara-install
-    - sahara-pip-packages
 
 - name: Install required pip packages
   pip:
@@ -71,20 +56,6 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  tags:
-    - sahara-install
-    - sahara-pip-packages
-
-- name: Get local venv checksum
-  stat:
-    path: "/var/cache/{{ sahara_venv_download_url | basename }}"
-    get_md5: False
-  when:
-    - not sahara_developer_mode | bool
-  register: local_venv_stat
-  tags:
-    - sahara-install
-    - sahara-pip-packages
 
 - name: Get remote venv checksum
   uri:
@@ -93,36 +64,20 @@
   when:
     - not sahara_developer_mode | bool
   register: remote_venv_checksum
-  tags:
-    - sahara-install
-    - sahara-pip-packages
 
-# TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
-#       a) allow us to remove force: yes
-#       b) allow the module to calculate the checksum of dest file which would
-#          result in file being downloaded only if provided and dest sha256sum
-#          checksums differ
 - name: Attempt venv download
   get_url:
     url: "{{ sahara_venv_download_url }}"
     dest: "/var/cache/{{ sahara_venv_download_url | basename }}"
-    force: yes
+    checksum: "sha1:{{ remote_venv_checksum.content }}"
   ignore_errors: true
   register: get_venv
   when:
     - not sahara_developer_mode | bool
-    - (local_venv_stat.stat.exists == False or
-        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
-  tags:
-    - sahara-install
-    - sahara-pip-packages
 
 - name: Set sahara get_venv fact
   set_fact:
     sahara_get_venv: "{{ get_venv }}"
-  tags:
-    - sahara-install
-    - sahara-pip-packages
 
 - name: Remove existing venv
   file:
@@ -130,18 +85,12 @@
     state: absent
   when:
     - sahara_get_venv | changed
-  tags:
-    - sahara-install
-    - sahara-pip-packages
 
 - name: Create sahara venv dir
   file:
     path: "{{ sahara_bin | dirname }}"
     state: directory
   register: sahara_venv_dir
-  tags:
-    - sahara-install
-    - sahara-pip-packages
 
 - name: Unarchive pre-built venv
   unarchive:
@@ -153,14 +102,11 @@
     - sahara_get_venv | changed or sahara_venv_dir | changed
   notify:
     - Restart sahara services
-  tags:
-    - sahara-install
-    - sahara-pip-packages
 
 - name: Install pip packages (venv)
   pip:
     name: "{{ sahara_pip_packages | join(' ') }}"
-    state: present
+    state: latest
     virtualenv: "{{ sahara_bin | dirname }}"
     virtualenv_site_packages: "no"
     extra_args: "{{ pip_install_options_fact }}"
@@ -172,9 +118,6 @@
     - sahara_get_venv | failed or sahara_developer_mode | bool
   notify:
     - Restart sahara services
-  tags:
-    - sahara-install
-    - sahara-pip-packages
 
 - name: Update virtualenv path
   command: >
@@ -182,7 +125,3 @@
   when:
     - not sahara_developer_mode | bool
     - sahara_get_venv | success
-  tags:
-    - sahara-install
-    - sahara-pip-packages
-

@@ -13,13 +13,9 @@
 
 - include: sahara_init_upstart.yml
   when: pid1_name == "init"
-  tags:
-    - sahara-init
 
 - include: sahara_init_systemd.yml
   when: pid1_name == "systemd"
-  tags:
-    - sahara-init
 
 - name: Load service
   service:

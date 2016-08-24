@@ -16,8 +16,6 @@
     name: "{{ sahara_system_group_name }}"
     state: "present"
     system: "yes"
-  tags:
-    - sahara-group
 
 - name: Create the sahara system user
   user:
@@ -28,8 +26,6 @@
     system: "yes"
     createhome: "yes"
     home: "{{ sahara_system_user_home }}"
-  tags:
-    - sahara-user
 
 - name: Create sahara dir
   file:
@@ -43,8 +39,6 @@
     - { path: "/etc/sahara" }
     - { path: "/var/cache/sahara" }
     - { path: "{{ sahara_system_user_home }}" }
-  tags:
-    - sahara-dirs
 
 - name: Test for log directory or link
   shell: |
@@ -57,9 +51,6 @@
   register: log_dir
   failed_when: false
   changed_when: log_dir.rc != 0
-  tags:
-    - sahara-dirs
-    - sahara-logs
 
 - name: Create sahara log dir
   file:
@@ -69,6 +60,3 @@
     group: "{{ sahara_system_group_name }}"
     mode: "0755"
   when: log_dir.rc != 0
-  tags:
-    - sahara-dirs
-    - sahara-logs
