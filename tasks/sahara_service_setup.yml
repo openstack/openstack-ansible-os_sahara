@@ -27,10 +27,6 @@
   until: add_service|success
   retries: 5
   delay: 2
-  tags:
-    - sahara-api-setup
-    - sahara-service-add
-    - sahara-setup
 
 # Create an admin user
 - name: Ensure sahara user
@@ -49,10 +45,6 @@
   until: add_service|success
   retries: 5
   delay: 10
-  tags:
-    - sahara-api-setup
-    - sahara-service-add
-    - sahara-setup
 
 # Add a role to the user
 - name: Ensure sahara user to admin role
@@ -71,10 +63,6 @@
   until: add_service|success
   retries: 5
   delay: 10
-  tags:
-    - sahara-api-setup
-    - sahara-service-add
-    - sahara-setup
 
 # Create an endpoint
 - name: Ensure sahara endpoint
@@ -99,10 +87,6 @@
   until: add_service|success
   retries: 5
   delay: 10
-  tags:
-    - sahara-api-setup
-    - sahara-service-add
-    - sahara-setup
 
 # Create proxy domain
 - name: Ensure sahara_proxy domain
@@ -119,6 +103,3 @@
   retries: 5
   delay: 10
   when: sahara_use_domain_for_proxy_users|bool
-  tags:
-    - sahara-proxy-domain-add
-    - sahara-setup

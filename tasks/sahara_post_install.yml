@@ -36,6 +36,3 @@
   notify:
     - Restart sahara api
     - Restart sahara engine
-  tags:
-    - sahara-config
-

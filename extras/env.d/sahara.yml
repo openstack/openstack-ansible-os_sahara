@@ -22,12 +22,17 @@ component_skel:
 container_skel:
   sahara_container:
     belongs_to:
-      - infra_containers
-      - os-infra_containers
+      - sahara-infra_containers
     contains:
       - sahara_api
       - sahara_engine
     properties:
       service_name: sahara
-      container_release: trusty
-      container_fs_size: 12G
+
+physical_skel:
+  sahara-infra_containers:
+    belongs_to:
+      - all_containers
+  sahara-infra_hosts:
+    belongs_to:
+      - hosts
