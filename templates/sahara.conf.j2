@@ -27,6 +27,11 @@ proxy_user_domain_name = {{ sahara_proxy_user_domain_name }}
 proxy_user_role_names = {{ sahara_proxy_user_role_names }}
 {% endif %}
 
+## RPC Backend
+rpc_backend = {{ sahara_rpc_backend }}
+transport_url = rabbit://{% for host in sahara_rabbitmq_servers.split(',') %}{{ sahara_rabbitmq_userid }}:{{ sahara_rabbitmq_password }}@{{ host }}:{{ sahara_rabbitmq_port }}{% if not loop.last %},{% else %}/{{ sahara_rabbitmq_vhost }}{% endif %}{% endfor %}
+
+
 [database]
 connection = mysql+pymysql://{{ sahara_galera_user }}:{{ sahara_container_mysql_password }}@{{ sahara_galera_address }}/{{ sahara_galera_database }}?charset=utf8
 
@@ -66,21 +71,16 @@ policy_file = {{ sahara_policy_file }}
 policy_default_rule = {{ sahara_policy_default_rule }}
 policy_dirs = {{ sahara_policy_dirs }}
 
+# Ceilometer options
 {% if sahara_ceilometer_enabled %}
 [oslo_messaging_notifications]
 driver = messagingv2
+transport_url = rabbit://{% for host in sahara_rabbitmq_telemetry_servers.split(',') %}{{ sahara_rabbitmq_telemetry_userid }}:{{ sahara_rabbitmq_telemetry_password }}@{{ host }}:{{ sahara_rabbitmq_telemetry_port }}{% if not loop.last %},{% else %}/{{ sahara_rabbitmq_telemetry_vhost }}{% endif %}{% endfor %}
 {% endif %}
 
 
 [oslo_messaging_rabbit]
-rabbit_hosts = {{ sahara_rabbitmq_servers }}
-rabbit_port = {{ sahara_rabbitmq_port }}
-rabbit_userid = {{ sahara_rabbitmq_userid }}
-rabbit_password = {{ sahara_rabbitmq_password }}
-rabbit_virtual_host = {{ sahara_rabbitmq_vhost }}
-rabbit_use_ssl = {{ sahara_rabbitmq_use_ssl }}
-rabbit_notification_exchange = sahara
-rabbit_notification_topic = notifications
+rabbit_use_ssl = {{ rabbitmq_use_ssl }}
 
 [profiler]
 enabled = {{ sahara_profiler_enabled }}
