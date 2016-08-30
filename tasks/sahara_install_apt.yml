@@ -32,4 +32,4 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: "{{ sahara_apt_packages }}"
+  with_items: "{{ sahara_distro_packages }}"

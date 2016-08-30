@@ -16,7 +16,7 @@
 cache_timeout: 600
 
 # Common apt packages
-sahara_apt_packages:
+sahara_distro_packages:
   - rpcbind
   - rsync
   - git
