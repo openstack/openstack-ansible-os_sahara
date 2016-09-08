@@ -29,10 +29,26 @@
       dest: "/etc/sahara/sahara.conf"
       config_overrides: "{{ sahara_conf_overrides }}"
       config_type: "ini"
+    - src: "rootwrap.conf.j2"
+      dest: "/etc/sahara/rootwrap.conf"
+      owner: "root"
+      group: "root"
+      config_overrides: "{{ sahara_rootwrap_conf_overrides }}"
+      config_type: "ini"
     - src: "policy.json.j2"
       dest: "/etc/sahara/policy.json"
       config_overrides: "{{ sahara_policy_overrides }}"
       config_type: "json"
+  notify:
+    - Restart sahara api
+    - Restart sahara engine
+
+- name: Drop rootwrap filter(s)
+  copy:
+    src: "rootwrap.d/sahara.filters"
+    dest: "/etc/sahara/rootwrap.d/sahara.filters"
+    owner: "root"
+    group: "root"
   notify:
     - Restart sahara api
     - Restart sahara engine
