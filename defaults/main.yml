@@ -181,4 +181,5 @@ sahara_role_project_group: sahara_all
 ## Tunable overrides
 sahara_api_paste_ini_overrides: {}
 sahara_conf_overrides: {}
+sahara_rootwrap_conf_overrides: {}
 sahara_policy_overrides: {}

@@ -37,6 +37,8 @@
   with_items:
     - { path: "/openstack", mode: "0755", owner: "root", group: "root" }
     - { path: "/etc/sahara" }
+    - { path: "/etc/sahara/rootwrap.d", owner: "root", group: "root" }
+    - { path: "/etc/sudoers.d", mode: "0750", owner: "root", group: "root" }
     - { path: "/var/cache/sahara" }
     - { path: "{{ sahara_system_user_home }}" }
 
@@ -60,3 +62,11 @@
     group: "{{ sahara_system_group_name }}"
     mode: "0755"
   when: log_dir.rc != 0
+
+- name: Drop sudoers file
+  template:
+    src: "sudoers.j2"
+    dest: "/etc/sudoers.d/{{ sahara_system_user_name }}_sudoers"
+    mode: "0440"
+    owner: "root"
+    group: "root"
