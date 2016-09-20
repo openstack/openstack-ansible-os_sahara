@@ -45,10 +45,12 @@
 
 - name: Drop rootwrap filter(s)
   copy:
-    src: "rootwrap.d/sahara.filters"
-    dest: "/etc/sahara/rootwrap.d/sahara.filters"
+    src: "{{ item }}"
+    dest: "/etc/sahara/rootwrap.d/"
     owner: "root"
     group: "root"
+  with_fileglob:
+    - rootwrap.d/*
   notify:
     - Restart sahara api
     - Restart sahara engine
