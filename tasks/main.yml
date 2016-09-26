@@ -50,13 +50,11 @@
     - sahara-install
 
 - include: sahara_db_setup.yml
-  static: no
   when: inventory_hostname == groups['sahara_all'][0]
   tags:
     - sahara-install
 
 - include: sahara_service_setup.yml
-  static: no
   when: inventory_hostname == groups['sahara_all'][0]
   tags:
     - sahara-install
