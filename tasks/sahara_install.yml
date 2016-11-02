@@ -106,7 +106,7 @@
 - name: Install pip packages (venv)
   pip:
     name: "{{ sahara_pip_packages | join(' ') }}"
-    state: latest
+    state: "{{ sahara_pip_package_state }}"
     virtualenv: "{{ sahara_bin | dirname }}"
     virtualenv_site_packages: "no"
     extra_args: "{{ pip_install_options_fact }}"
