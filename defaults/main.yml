@@ -20,8 +20,6 @@ sahara_package_state: "latest"
 
 sahara_git_repo: https://git.openstack.org/openstack/sahara
 sahara_git_install_branch: stable/newton
-sahara_requirements_git_repo: https://git.openstack.org/openstack/requirements
-sahara_requirements_git_install_branch: stable/newton
 sahara_developer_mode: false
 sahara_developer_constraints:
   - "git+{{ sahara_git_repo }}@{{ sahara_git_install_branch }}#egg=sahara"
