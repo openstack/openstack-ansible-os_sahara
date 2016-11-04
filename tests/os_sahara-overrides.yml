@@ -1,5 +1,5 @@
 ---
-# Copyright 2015, Rackspace US, Inc.
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# There are currently no overrides required for the sahara role.
-# If you need sahara specific variable overries set them below and add
-# "-e @{toxinidir}/tests/sahara-overrides.yml \" to the ansible test run.
+# Ref: https://bugs.launchpad.net/openstack-ansible/+bug/1638883
+tempest_git_install_branch: 93a0c668d9b39c619eb67ed2ae6b74074d4626e5
