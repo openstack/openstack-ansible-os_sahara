@@ -37,34 +37,19 @@
   retries: 5
   delay: 2
 
-- name: Get remote venv checksum
-  uri:
-    url: "{{ sahara_venv_download_url | replace('tgz', 'checksum') }}"
-    return_content: True
-  when:
-    - not sahara_developer_mode | bool
-  register: remote_venv_checksum
-
 - name: Attempt venv download
   get_url:
     url: "{{ sahara_venv_download_url }}"
     dest: "/var/cache/{{ sahara_venv_download_url | basename }}"
-    checksum: "sha1:{{ remote_venv_checksum.content }}"
-  failed_when: false
-  register: get_venv
-  when:
-    - not sahara_developer_mode | bool
-
-- name: Set sahara get_venv fact
-  set_fact:
-    sahara_get_venv: "{{ get_venv }}"
+    checksum: "sha1:{{ lookup('url', sahara_venv_download_url | replace('tgz', 'checksum')) }}"
+  register: sahara_get_venv
+  when: not sahara_developer_mode | bool
 
 - name: Remove existing venv
   file:
     path: "{{ sahara_bin | dirname }}"
     state: absent
-  when:
-    - sahara_get_venv | changed
+  when: sahara_get_venv | changed
 
 - name: Create sahara venv dir
   file:
@@ -97,8 +82,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  when:
-    - sahara_get_venv | failed or sahara_developer_mode | bool
+  when: sahara_developer_mode | bool
   notify:
     - Restart sahara services
 
@@ -107,4 +91,4 @@
     virtualenv-tools --update-path=auto {{ sahara_bin | dirname }}
   when:
     - not sahara_developer_mode | bool
-    - sahara_get_venv | success
+    - sahara_get_venv | changed or sahara_venv_dir | changed
