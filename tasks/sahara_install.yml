@@ -27,7 +27,7 @@
 
 - name: Install required pip packages
   pip:
-    name: "{{ sahara_required_pip_packages | join(' ') }}"
+    name: "{{ sahara_required_pip_packages }}"
     state: present
     extra_args: >-
       {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
@@ -70,7 +70,7 @@
 
 - name: Install pip packages (venv)
   pip:
-    name: "{{ sahara_pip_packages | join(' ') }}"
+    name: "{{ sahara_pip_packages }}"
     state: "{{ sahara_pip_package_state }}"
     virtualenv: "{{ sahara_bin | dirname }}"
     virtualenv_site_packages: "no"
