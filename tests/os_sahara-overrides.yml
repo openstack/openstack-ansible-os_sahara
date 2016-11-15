@@ -13,5 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Ref: https://bugs.launchpad.net/openstack-ansible/+bug/1638883
-tempest_git_install_branch: 93a0c668d9b39c619eb67ed2ae6b74074d4626e5
+tempest_plugins:
+  - name: sahara-tests
+    repo: https://git.openstack.org/openstack/sahara-tests
+    branch: master
