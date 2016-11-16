@@ -88,7 +88,7 @@
 
 - name: Update virtualenv path
   command: >
-    virtualenv-tools --update-path=auto {{ sahara_bin | dirname }}
+    virtualenv-tools --update-path=auto --reinitialize {{ sahara_bin | dirname }}
   when:
     - not sahara_developer_mode | bool
     - sahara_get_venv | changed or sahara_venv_dir | changed
