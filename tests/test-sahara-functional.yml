@@ -19,6 +19,6 @@
     - name: Run tempest
       shell: |
         . {{ tempest_venv_bin }}/activate
-        {{ tempest_venv_bin | dirname }}/run_tempest.sh --no-virtual-env --serial data_processing
+        {{ tempest_venv_bin | dirname }}/run_tempest.sh --no-virtual-env --serial sahara_tempest_plugin.tests.api
   vars_files:
     - common/test-vars.yml
