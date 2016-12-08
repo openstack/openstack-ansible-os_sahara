@@ -13,7 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+tempest_run: yes
+
 tempest_plugins:
   - name: sahara-tests
     repo: https://git.openstack.org/openstack/sahara-tests
     branch: master
+
+tempest_test_whitelist:
+  - sahara_tempest_plugin.tests.api

@@ -28,8 +28,5 @@
 # Install Sahara
 - include: common/test-install-sahara.yml
 
-# Install Tempest
+# Install and execute Tempest
 - include: common/test-install-tempest.yml
-
-# Test Sahara
-- include: test-sahara-functional.yml
