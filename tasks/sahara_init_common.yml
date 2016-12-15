@@ -11,11 +11,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: sahara_init_upstart.yml
-  static: no
-  when:
-    - ansible_service_mgr == 'upstart'
-
 - include: sahara_init_systemd.yml
   static: no
   when:

@@ -7,7 +7,7 @@ OpenStack-Ansible sahara role
 
    configure-sahara.rst
 
-This role installs the following Upstart services:
+This role installs the following Systemd services:
 
     * sahara-api
     * sahara-engine

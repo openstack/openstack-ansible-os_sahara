@@ -15,17 +15,14 @@
   service:
     name: "sahara-api"
     state: "restarted"
-    pattern: "sahara-api"
 
 - name: Restart sahara engine
   service:
     name: "sahara-engine"
     state: "restarted"
-    pattern: "sahara-engine"
 
 - name: Restart sahara services
   service:
     name: "{{ item }}"
     state: "restarted"
-    pattern: "{{ item }}"
   with_items: "{{ sahara_service_names }}"
