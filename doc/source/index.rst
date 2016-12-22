@@ -12,6 +12,9 @@ This role installs the following Systemd services:
     * sahara-api
     * sahara-engine
 
+To clone or view the source code for this repository, visit the role repository
+for `os_sahara <https://github.com/openstack/openstack-ansible-os_sahara>`_.
+
 Default variables
 ~~~~~~~~~~~~~~~~~
 
