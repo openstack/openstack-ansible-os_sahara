@@ -39,7 +39,6 @@ connection = mysql+pymysql://{{ sahara_galera_user }}:{{ sahara_container_mysql_
 [keystone_authtoken]
 insecure = {{ keystone_service_internaluri_insecure | bool }}
 auth_type = {{ sahara_keystone_auth_plugin }}
-signing_dir = {{ sahara_system_user_home }}/cache/api
 auth_url = {{ keystone_service_adminurl }}
 auth_uri = {{ keystone_service_internaluri }}
 project_domain_id = {{ sahara_service_project_domain_id }}
@@ -56,15 +55,10 @@ admin_password = {{ sahara_service_password }}
 memcached_servers = {{ memcached_servers }}
 
 token_cache_time = 300
-revocation_cache_time = 60
 
 # if your memcached server is shared, use these settings to avoid cache poisoning
 memcache_security_strategy = ENCRYPT
 memcache_secret_key = {{ memcached_encryption_key }}
-
-# if your keystone deployment uses PKI, and you value security over performance:
-check_revocations_for_cached = False
-
 
 [oslo_policy]
 policy_file = {{ sahara_policy_file }}
