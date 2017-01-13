@@ -35,7 +35,7 @@
     group: "{{ item.group|default(sahara_system_group_name) }}"
     mode: "{{ item.mode|default('0755') }}"
   with_items:
-    - { path: "/openstack", mode: "0755", owner: "root", group: "root" }
+    - { path: "/openstack/venvs", mode: "0755", owner: "root", group: "root" }
     - { path: "/etc/sahara" }
     - { path: "/etc/sahara/rootwrap.d", owner: "root", group: "root" }
     - { path: "/etc/sudoers.d", mode: "0750", owner: "root", group: "root" }
