@@ -31,6 +31,9 @@ sahara_bin: "/openstack/venvs/sahara-{{ sahara_venv_tag }}/bin"
 
 sahara_etc_dir: "{{ sahara_bin | dirname }}/etc/sahara"
 
+# venv_download, even when true, will use the fallback method of building the
+# venv from scratch if the venv download fails.
+sahara_venv_download: "{{ not sahara_developer_mode | bool }}"
 sahara_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/sahara.tgz
 
 sahara_db_config: /etc/sahara/sahara.conf
