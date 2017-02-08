@@ -27,6 +27,8 @@ galera_all
 [nova_api_os_compute]
 openstack1
 
+[nova_api_placement]
+
 [nova_cert]
 
 [nova_compute]
