@@ -40,8 +40,7 @@
       config_overrides: "{{ sahara_policy_overrides }}"
       config_type: "json"
   notify:
-    - Restart sahara api
-    - Restart sahara engine
+    - Restart sahara services
 
 - name: Drop rootwrap filter(s)
   copy:
@@ -52,5 +51,4 @@
   with_fileglob:
     - rootwrap.d/*
   notify:
-    - Restart sahara api
-    - Restart sahara engine
+    - Restart sahara services

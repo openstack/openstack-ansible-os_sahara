@@ -11,18 +11,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Restart sahara api
-  service:
-    name: "sahara-api"
-    state: "restarted"
-
-- name: Restart sahara engine
-  service:
-    name: "sahara-engine"
-    state: "restarted"
-
 - name: Restart sahara services
-  service:
-    name: "{{ item }}"
+  systemd:
+    name: "{{ item.value.service_name }}"
     state: "restarted"
-  with_items: "{{ sahara_service_names }}"
+    daemon_reload: yes
+  with_dict: "{{ sahara_services }}"
+  when: inventory_hostname in groups[item.value.group]

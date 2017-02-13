@@ -10,14 +10,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install apt packages
-  apt:
-    pkg: "{{ item }}"
-    state: "{{ sahara_package_state }}"
-    update_cache: yes
-    cache_valid_time: "{{ cache_timeout }}"
-  register: install_packages
-  until: install_packages|success
-  retries: 5
-  delay: 2
-  with_items: "{{ sahara_distro_packages }}"
+sahara_distro_packages:
+  - cronie
+  - cronie-anacron
+  - rpcbind
+  - git
+  - which
