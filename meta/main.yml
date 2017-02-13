@@ -4,7 +4,7 @@ galaxy_info:
   description: Installation and setup of sahara
   company: LSD/UFCG
   license: Apache2
-  min_ansible_version: 2.0
+  min_ansible_version: 2.1
   platforms:
     - name: Ubuntu
       versions:

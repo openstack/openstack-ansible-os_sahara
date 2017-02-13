@@ -45,5 +45,12 @@ nova_api_os_compute
 [keystone_all]
 openstack1
 
-[sahara_all]
+[sahara_api]
 sahara1
+
+[sahara_engine]
+sahara1
+
+[sahara_all:children]
+sahara_api
+sahara_engine

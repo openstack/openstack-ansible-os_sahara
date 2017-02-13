@@ -75,8 +75,6 @@ sahara_galera_user: sahara
 sahara_role_name: admin
 sahara_api_bind_address: 0.0.0.0
 sahara_api_service_port: 8386
-sahara_api_program_name: sahara-api
-sahara_engine_program_name: sahara-engine
 
 ## Service Type and Data
 sahara_service_region: RegionOne
@@ -152,7 +150,7 @@ sahara_policy_dirs: policy.d
 sahara_service_in_ldap: False
 
 # Sahara packages that must be installed before anything else
-sahara_required_pip_packages:
+sahara_requires_pip_packages:
   - virtualenv
   - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
@@ -170,9 +168,13 @@ sahara_pip_packages:
   - warlock
 
 ## Service Names
-sahara_service_names:
-  - "sahara-api"
-  - "sahara-engine"
+sahara_services:
+  sahara-api:
+    group: sahara_api
+    service_name: sahara-api
+  sahara-engine:
+    group: sahara_engine
+    service_name: sahara-engine
 
 # This variable is used by the repo_build process to determine
 # which host group to check for members of before building the

@@ -15,7 +15,10 @@
   include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+    - "{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+    - "{{ ansible_os_family | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
     - "{{ ansible_distribution | lower }}.yml"
+    - "{{ ansible_os_family | lower }}-{{ ansible_distribution_version.split('.')[0] }}.yml"
     - "{{ ansible_os_family | lower }}.yml"
   tags:
     - always
@@ -32,7 +35,7 @@
   tags:
     - sahara-config
 
-- include: sahara_init.yml
+- include: sahara_init_common.yml
   tags:
     - sahara-config
 

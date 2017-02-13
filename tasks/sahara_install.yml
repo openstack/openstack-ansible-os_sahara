@@ -11,9 +11,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: sahara_install_apt.yml
-  static: no
-  when: ansible_pkg_mgr == 'apt'
+- name: Ensure apt cache is up to date
+  apt:
+    update_cache: yes
+    cache_valid_time: "{{ cache_timeout }}"
+  when:
+    - ansible_pkg_mgr == 'apt'
+
+- name: Install distro packages
+  package:
+    name: "{{ item }}"
+    state: "{{ sahara_package_state }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: "{{ sahara_distro_packages }}"
 
 - name: Create developer mode constraint file
   copy:
@@ -25,10 +38,10 @@
   when:
     - sahara_developer_mode | bool
 
-- name: Install required pip packages
+- name: Install requires pip packages
   pip:
-    name: "{{ sahara_required_pip_packages }}"
-    state: present
+    name: "{{ sahara_requires_pip_packages }}"
+    state: "{{ sahara_pip_package_state }}"
     extra_args: >-
       {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
       {{ pip_install_options | default('') }}

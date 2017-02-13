@@ -12,13 +12,14 @@
 # limitations under the License.
 
 - include: sahara_init_systemd.yml
-  static: no
   when:
     - ansible_service_mgr == 'systemd'
 
 - name: Load service
   service:
-   name: "{{ program_name }}"
-   enabled: "yes"
+    name: "{{ item.value.service_name }}"
+    enabled: "yes"
+  with_dict: "{{ sahara_services }}"
+  when: inventory_hostname in groups[item.value.group]
   notify:
     - Restart sahara services
