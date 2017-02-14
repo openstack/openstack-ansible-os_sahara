@@ -46,7 +46,7 @@
 - name: Create tmpfiles.d entry
   template:
     src: "sahara-systemd-tmpfiles.j2"
-    dest: "/etc/tmpfiles.d/{{ item.value.service_name }}.conf"
+    dest: "/etc/tmpfiles.d/openstack-{{ item.value.service_name }}.conf"
     mode: "0644"
     owner: "root"
     group: "root"
