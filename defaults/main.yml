@@ -123,13 +123,9 @@ sahara_plugin_base:
 
 sahara_plugin_loaded_base: "{% for plugin in sahara_plugin_base %}{{ plugin }}{% if not loop.last %},{% endif %}{% endfor %}"
 
-# If ``sahara_api_workers`` is unset the system will use half the number of available VCPUS to
-# compute the number of api workers to use.
-# sahara_api_workers: 16
-
-# If ``sahara_engine_workers`` is unset the system will use half the number of available VCPUS to
-# compute the number of api workers to use.
-# sahara_engine_workers: 16
+## Cap the maximum number of threads / workers when a user value is unspecified.
+sahara_api_workers_max: 16
+sahara_api_workers: "{{ [[ansible_processor_vcpus|default(2) // 2, 1] | max, sahara_api_workers_max] | min }}"
 
 sahara_task_executor: taskflow
 sahara_digest_algorithm: sha256
