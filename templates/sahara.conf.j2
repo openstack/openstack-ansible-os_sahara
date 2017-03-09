@@ -1,8 +1,5 @@
 # {{ ansible_managed }}
 
-{% set _api_threads = ansible_processor_vcpus|default(2) // 2 %}
-{% set api_threads = _api_threads if _api_threads > 0 else 1 %}
-
 [DEFAULT]
 # Disable stderr logging
 use_stderr = False
@@ -12,7 +9,7 @@ log_file = /var/log/sahara/sahara.log
 fatal_deprecations = {{ sahara_fatal_deprecations }}
 host = {{ sahara_api_bind_address }}
 port = {{ sahara_api_service_port }}
-workers = {{ sahara_api_workers | default(api_threads) }}
+workers = {{ sahara_api_workers }}
 use_floating_ips = {{ sahara_use_floating_ips }}
 use_neutron = {{ sahara_use_neutron }}
 use_namespaces = {{ sahara_use_namespaces }}
