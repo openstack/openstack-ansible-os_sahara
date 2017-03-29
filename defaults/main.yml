@@ -163,14 +163,19 @@ sahara_pip_packages:
   - python-keystoneclient
   - warlock
 
+sahara_engine_init_overrides: {}
+sahara_api_init_overrides: {}
+
 ## Service Names
 sahara_services:
   sahara-api:
     group: sahara_api
     service_name: sahara-api
+    init_config_overrides: "{{ sahara_api_init_overrides }}"
   sahara-engine:
     group: sahara_engine
     service_name: sahara-engine
+    init_config_overrides: "{{ sahara_engine_init_overrides }}"
 
 # This variable is used by the repo_build process to determine
 # which host group to check for members of before building the
