@@ -113,3 +113,10 @@
   command: >
     virtualenv-tools --update-path=auto --reinitialize {{ sahara_bin | dirname }}
   when: sahara_get_venv | changed
+
+- name: Record the venv tag deployed
+  ini_file:
+    dest: "/etc/ansible/facts.d/openstack_ansible.fact"
+    section: sahara
+    option: venv_tag
+    value: "{{ sahara_venv_tag }}"
