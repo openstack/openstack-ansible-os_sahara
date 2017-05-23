@@ -71,7 +71,7 @@ transport_url = rabbit://{% for host in sahara_rabbitmq_telemetry_servers.split(
 
 
 [oslo_messaging_rabbit]
-rabbit_use_ssl = {{ rabbitmq_use_ssl }}
+ssl = {{ rabbitmq_use_ssl }}
 
 [profiler]
 enabled = {{ sahara_profiler_enabled }}
