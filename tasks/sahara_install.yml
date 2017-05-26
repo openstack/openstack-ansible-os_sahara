@@ -38,6 +38,7 @@
     name: "{{ sahara_requires_pip_packages }}"
     state: "{{ sahara_pip_package_state }}"
     extra_args: >-
+      {{ sahara_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
       {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
       {{ pip_install_options | default('') }}
   register: install_packages
@@ -90,7 +91,7 @@
     virtualenv: "{{ sahara_bin | dirname }}"
     virtualenv_site_packages: "no"
     extra_args: >-
-      {{ sahara_developer_mode | ternary('--constraint /opt/developer-pip-constraints.txt', '') }}
+      {{ sahara_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
       {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
       {{ pip_install_options | default('') }}
   register: install_packages
