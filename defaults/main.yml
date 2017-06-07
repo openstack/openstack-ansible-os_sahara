@@ -154,13 +154,13 @@ sahara_requires_pip_packages:
 
 # Common pip packages
 sahara_pip_packages:
-  - sahara
+  - cryptography
   - keystonemiddleware
   - PyMySQL
   - python-memcached
-  - pycrypto
   - python-saharaclient
   - python-keystoneclient
+  - sahara
   - warlock
 
 sahara_engine_init_overrides: {}
