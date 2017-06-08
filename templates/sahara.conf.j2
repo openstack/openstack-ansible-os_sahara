@@ -25,7 +25,6 @@ proxy_user_role_names = {{ sahara_proxy_user_role_names }}
 {% endif %}
 
 ## RPC Backend
-rpc_backend = {{ sahara_rpc_backend }}
 transport_url = rabbit://{% for host in sahara_rabbitmq_servers.split(',') %}{{ sahara_rabbitmq_userid }}:{{ sahara_rabbitmq_password }}@{{ host }}:{{ sahara_rabbitmq_port }}{% if not loop.last %},{% else %}/{{ sahara_rabbitmq_vhost }}{% endif %}{% endfor %}
 
 
