@@ -34,6 +34,7 @@ openstack1
 [nova_compute]
 
 [nova_conductor]
+openstack1
 
 [nova_console]
 
