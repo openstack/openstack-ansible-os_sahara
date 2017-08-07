@@ -1,4 +1,5 @@
-# Copyright 2016, Intel Corporation.
+---
+# Copyright 2017, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## APT Cache options
-cache_timeout: 600
+- name: Ensure uWSGI directory exists
+  file:
+    path: "/etc/uwsgi/"
+    state: directory
+    mode: "0711"
 
-# Common apt packages
-sahara_distro_packages:
-  - rpcbind
-  - rsync
-  - git
-  - libxml2-dev
+- name: Apply uWSGI configuration
+  config_template:
+    src: "sahara-uwsgi.ini.j2"
+    dest: "/etc/uwsgi/{{ item.value.service_name }}.ini"
+    mode: "0744"
+    config_overrides: "{{ item.value.wsgi_overrides }}"
+    config_type: ini
+  with_dict: "{{ sahara_services }}"
+  when: item.value.wsgi_app | default(False)
+  notify:
+    - Restart sahara services

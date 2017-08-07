@@ -16,3 +16,4 @@ sahara_distro_packages:
   - rpcbind
   - git
   - which
+  - libxml2-devel

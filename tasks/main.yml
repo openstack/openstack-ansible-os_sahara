@@ -35,6 +35,10 @@
   tags:
     - sahara-config
 
+- include: sahara_uwsgi.yml
+  tags:
+    - sahara-config
+
 - include: sahara_init_common.yml
   tags:
     - sahara-config
