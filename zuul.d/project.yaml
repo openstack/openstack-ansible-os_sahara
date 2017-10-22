@@ -1,5 +1,5 @@
 ---
-# Copyright 2016, Rackspace US, Inc.
+# Copyright 2017, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-tempest_plugins:
-  - name: sahara-tests
-    repo: https://git.openstack.org/openstack/sahara-tests
-    branch: 0.4.1
+- project:
+    name: openstack/openstack-ansible-os_sahara
+    check:
+      jobs:
+        - openstack-ansible-linters
+        - openstack-ansible-functional-ubuntu-trusty
+        - openstack-ansible-functional-ubuntu-xenial
+    gate:
+      jobs:
+        - openstack-ansible-linters
+        - openstack-ansible-functional-ubuntu-trusty
+        - openstack-ansible-functional-ubuntu-xenial
