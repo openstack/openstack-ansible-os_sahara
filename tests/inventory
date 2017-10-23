@@ -34,13 +34,20 @@ openstack1
 [nova_compute]
 
 [nova_conductor]
+openstack1
 
 [nova_console]
 
 [nova_scheduler]
 
 [nova_all:children]
+nova_api_metadata
 nova_api_os_compute
+nova_compute
+nova_conductor
+nova_console
+nova_scheduler
+nova_api_placement
 
 [keystone_all]
 openstack1
