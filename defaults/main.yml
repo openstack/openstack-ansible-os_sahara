@@ -102,7 +102,6 @@ sahara_keystone_auth_plugin: password
 
 ## Sahara config
 sahara_use_floating_ips: False
-sahara_use_neutron: True
 sahara_use_namespaces: False
 sahara_global_remote_threshold: 100
 sahara_cluster_remote_threshold: 70
