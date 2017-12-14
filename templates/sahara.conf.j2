@@ -28,7 +28,7 @@ transport_url = rabbit://{% for host in sahara_rabbitmq_servers.split(',') %}{{ 
 
 
 [database]
-connection = mysql+pymysql://{{ sahara_galera_user }}:{{ sahara_container_mysql_password }}@{{ sahara_galera_address }}/{{ sahara_galera_database }}?charset=utf8
+connection = mysql+pymysql://{{ sahara_galera_user }}:{{ sahara_container_mysql_password }}@{{ sahara_galera_address }}/{{ sahara_galera_database }}?charset=utf8{% if sahara_galera_use_ssl | bool %}&ssl_ca={{ sahara_galera_ssl_ca_cert }}{% endif %}
 
 
 [keystone_authtoken]

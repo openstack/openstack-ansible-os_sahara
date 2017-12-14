@@ -67,9 +67,11 @@ sahara_rabbitmq_telemetry_port: "{{ sahara_rabbitmq_port }}"
 sahara_rabbitmq_telemetry_servers: "{{ sahara_rabbitmq_servers }}"
 sahara_rabbitmq_telemetry_use_ssl: "{{ sahara_rabbitmq_use_ssl }}"
 
-## DB info
+## Database info
 sahara_galera_database: sahara
 sahara_galera_user: sahara
+sahara_galera_use_ssl: "{{ galera_use_ssl | default(False) }}"
+sahara_galera_ssl_ca_cert: "{{ galera_ssl_ca_cert | default('/etc/ssl/certs/galera-ca.pem') }}"
 
 sahara_role_name: admin
 sahara_api_bind_address: 0.0.0.0
