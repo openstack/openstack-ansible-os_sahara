@@ -146,7 +146,6 @@ sahara_service_in_ldap: False
 # Sahara packages that must be installed before anything else
 sahara_requires_pip_packages:
   - virtualenv
-  - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
   - httplib2
 
