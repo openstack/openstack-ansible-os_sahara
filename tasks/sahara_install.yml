@@ -114,6 +114,7 @@
   shell: |
     find {{ sahara_bin }} -name \*.pyc -delete
     sed -si '1s/^.*python.*$/#!{{ sahara_bin | replace ('/','\/') }}\/python/' {{ sahara_bin }}/*
+    virtualenv {{ sahara_bin | dirname }}
   when: sahara_get_venv | changed
   tags:
     - skip_ansible_lint
