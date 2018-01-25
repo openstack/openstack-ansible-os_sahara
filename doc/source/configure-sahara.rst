@@ -75,7 +75,7 @@ Object Storage access using proxy users
 By default sahara is configured to use proxy users and delegated trusts
 for Object Storage access. In that way, users are not required to enter
 credentials for their data sources and job binaries referenced in Object
-Storage. To disable this funcionality change the following variable to
+Storage. To disable this functionality change the following variable to
 ``False``.
 
    In ``user_variables.yml``:
@@ -84,7 +84,7 @@ Storage. To disable this funcionality change the following variable to
 
       sahara_use_domain_for_proxy_users: True
 
-Also, is it possible to change wich roles the trust users will receive
+Also, is it possible to change which roles the trust users will receive
 in the proxy domain, by default it receives the ``_member_`` role.
 
    In ``user_variables.yml``:
