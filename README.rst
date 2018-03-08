@@ -2,8 +2,8 @@
 Team and repository tags
 ========================
 
-.. image:: https://governance.openstack.org/badges/openstack-ansible-os_sahara.svg
-    :target: https://governance.openstack.org/reference/tags/index.html
+.. image:: https://governance.openstack.org/tc/badges/openstack-ansible-os_sahara.svg
+    :target: https://governance.openstack.org/tc/reference/tags/index.html
 
 .. Change things from this point on
 
