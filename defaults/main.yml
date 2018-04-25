@@ -53,19 +53,22 @@ sahara_system_user_home: "/var/lib/{{ sahara_system_user_name }}"
 
 sahara_engine_host: "{{ internal_lb_vip_address }}"
 
-## RabbitMQ info
-sahara_rabbitmq_userid: sahara
-sahara_rabbitmq_vhost: /sahara
-sahara_rabbitmq_use_ssl: False
-sahara_rabbitmq_servers: 127.0.0.1
-sahara_rabbitmq_port: 5672
+## Oslo Messaging Info
+# RPC
+sahara_oslomsg_rpc_transport: rabbit
+sahara_oslomsg_rpc_servers: 127.0.0.1
+sahara_oslomsg_rpc_port: 5672
+sahara_oslomsg_rpc_use_ssl: False
+sahara_oslomsg_rpc_userid: sahara
+sahara_oslomsg_rpc_vhost: /sahara
 
-## Configuration for notifications communication, i.e. [oslo_messaging_notifications]
-sahara_rabbitmq_telemetry_userid: "{{ sahara_rabbitmq_userid }}"
-sahara_rabbitmq_telemetry_vhost: "{{ sahara_rabbitmq_vhost }}"
-sahara_rabbitmq_telemetry_port: "{{ sahara_rabbitmq_port }}"
-sahara_rabbitmq_telemetry_servers: "{{ sahara_rabbitmq_servers }}"
-sahara_rabbitmq_telemetry_use_ssl: "{{ sahara_rabbitmq_use_ssl }}"
+# Notify
+sahara_oslomsg_notify_transport: rabbit
+sahara_oslomsg_notify_servers: 127.0.0.1
+sahara_oslomsg_notify_port: 5672
+sahara_oslomsg_notify_use_ssl: False
+sahara_oslomsg_notify_userid: sahara
+sahara_oslomsg_notify_vhost: /sahara
 
 ## Database info
 sahara_galera_database: sahara
