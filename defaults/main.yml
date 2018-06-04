@@ -71,6 +71,8 @@ sahara_oslomsg_notify_userid: sahara
 sahara_oslomsg_notify_vhost: /sahara
 
 ## Database info
+sahara_db_setup_host: "{{ ('galera_all' in groups) | ternary(groups['galera_all'][0], 'localhost') }}"
+sahara_galera_address: "{{ galera_address | default('127.0.0.1') }}"
 sahara_galera_database: sahara
 sahara_galera_user: sahara
 sahara_galera_use_ssl: "{{ galera_use_ssl | default(False) }}"
