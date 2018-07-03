@@ -22,3 +22,10 @@ tempest_plugins:
 
 tempest_test_whitelist:
   - sahara_tempest_plugin.tests.api
+
+# TODO(odyssey4me):
+# Remove this once sahara supported the nova.conf
+# option enabled.
+nova_nova_conf_overrides:
+  keystone_authtoken:
+    service_token_roles_required: False
