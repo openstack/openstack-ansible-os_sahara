@@ -160,6 +160,7 @@ sahara_requires_pip_packages:
 sahara_pip_packages:
   - cryptography
   - keystonemiddleware
+  - osprofiler
   - PyMySQL
   - python-memcached
   - python-saharaclient
