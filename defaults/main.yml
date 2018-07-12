@@ -14,6 +14,11 @@
 ## Verbosity Options
 debug: False
 
+# Set the host which will execute the shade modules
+# for the service setup. The host must already have
+# clouds.yaml properly configured.
+sahara_service_setup_host: "{{ openstack_service_setup_host | default('localhost') }}"
+
 # Set the package install state for distribution and pip packages
 # Options are 'present' and 'latest'
 sahara_package_state: "latest"
@@ -151,12 +156,6 @@ sahara_policy_dirs: policy.d
 #  "clusters:create": ""
 
 sahara_service_in_ldap: False
-
-# Sahara packages that must be installed before anything else
-sahara_requires_pip_packages:
-  - virtualenv
-  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
-  - httplib2
 
 # Common pip packages
 sahara_pip_packages:
