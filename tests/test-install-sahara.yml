@@ -1,5 +1,5 @@
 ---
-# Copyright 2016, Rackspace US, Inc.
+# Copyright 2015, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-tempest_run: yes
-
-tempest_plugins:
-  - name: sahara-tests
-    repo: https://git.openstack.org/openstack/sahara-tests
-    branch: bb23a5bd1998d4feefe75e207409e27d0791a5d2
-
-tempest_test_whitelist:
-  - sahara_tempest_plugin.tests.api
-
-sahara_developer_mode: true
-sahara_service_password: "secrete"
-sahara_container_mysql_password: "SuperSecrete"
-sahara_oslomsg_rpc_password: "{{ oslomsg_rpc_password }}"
-sahara_wsgi_processes: 2
+- name: Install Sahara
+  hosts: sahara_all
+  remote_user: root
+  gather_facts: true
+  any_errors_fatal: true
+  vars_files:
+    - common/test-vars.yml
+  roles:
+    - role: "os_sahara"

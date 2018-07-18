@@ -26,7 +26,7 @@
 - include: common/test-install-nova.yml
 
 # Install Sahara
-- include: common/test-install-sahara.yml
+- include: test-install-sahara.yml
 
 # Install and execute Tempest
 - include: common/test-install-tempest.yml
