@@ -125,11 +125,8 @@ sahara_service_user_domain_id: default
 sahara_service_project_domain_name: Default
 sahara_service_user_domain_name: Default
 sahara_service_publicuri: "{{ sahara_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ sahara_service_port }}"
-sahara_service_publicurl: "{{ sahara_service_publicuri }}/v1.1/%(tenant_id)s"
 sahara_service_internaluri: "{{ sahara_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ sahara_service_port }}"
-sahara_service_internalurl: "{{ sahara_service_internaluri }}/v1.1/%(tenant_id)s"
 sahara_service_adminuri: "{{ sahara_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ sahara_service_port }}"
-sahara_service_adminurl: "{{ sahara_service_adminuri }}/v1.1/%(tenant_id)s"
 
 ## Keystone authentication middleware
 sahara_keystone_auth_plugin: password

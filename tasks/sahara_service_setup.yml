@@ -84,11 +84,11 @@
       delay: 10
       with_items:
         - interface: "public"
-          url: "{{ sahara_service_publicurl }}"
+          url: "{{ sahara_service_publicuri }}"
         - interface: "internal"
-          url: "{{ sahara_service_internalurl }}"
+          url: "{{ sahara_service_internaluri }}"
         - interface: "admin"
-          url: "{{ sahara_service_adminurl }}"
+          url: "{{ sahara_service_adminuri }}"
 
     - name: Add proxy domain
       os_keystone_domain:
