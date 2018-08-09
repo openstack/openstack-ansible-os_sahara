@@ -80,6 +80,10 @@ sahara_oslomsg_notify_userid: "{{ sahara_oslomsg_rpc_userid }}"
 sahara_oslomsg_notify_password: "{{ sahara_oslomsg_rpc_password }}"
 sahara_oslomsg_notify_vhost: "{{ sahara_oslomsg_rpc_vhost }}"
 
+## (Qdrouterd) info
+# TODO(ansmith): Change structure when more backends will be supported
+sahara_oslomsg_amqp1_enabled: "{{ sahara_oslomsg_rpc_transport == 'amqp' }}"
+
 ## Database info
 sahara_db_setup_host: "{{ ('galera_all' in groups) | ternary(groups['galera_all'][0], 'localhost') }}"
 sahara_galera_address: "{{ galera_address | default('127.0.0.1') }}"
@@ -174,6 +178,9 @@ sahara_pip_packages:
   - sahara
   - warlock
   - uwsgi
+
+sahara_optional_oslomsg_amqp1_pip_packages:
+  - oslo.messaging[amqp1]
 
 sahara_engine_init_overrides: {}
 sahara_api_init_overrides: {}
