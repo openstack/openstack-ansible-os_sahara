@@ -17,7 +17,5 @@ cache_timeout: 600
 
 # Common apt packages
 sahara_distro_packages:
-  - rpcbind
-  - rsync
   - git
   - libxml2-dev
