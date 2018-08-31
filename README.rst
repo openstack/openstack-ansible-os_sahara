@@ -21,3 +21,6 @@ Release notes for the project can be found at:
 
 The project home is at:
   https://launchpad.net/openstack-ansible
+
+The bugs is at:
+  https://bugs.launchpad.net/openstack-ansible
