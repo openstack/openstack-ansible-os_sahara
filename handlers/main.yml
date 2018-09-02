@@ -18,3 +18,5 @@
     daemon_reload: yes
   with_dict: "{{ sahara_services }}"
   when: inventory_hostname in groups[item.value.group]
+  listen:
+    - "venv changed"

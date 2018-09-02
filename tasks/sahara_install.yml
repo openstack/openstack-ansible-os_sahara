@@ -11,18 +11,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install distro packages
-  package:
-    name: "{{ item }}"
-    state: "{{ sahara_package_state }}"
-    update_cache: "{{ (ansible_pkg_mgr in ['apt', 'zypper']) | ternary('yes', omit) }}"
-    cache_valid_time: "{{ (ansible_pkg_mgr == 'apt') | ternary(cache_timeout, omit) }}"
-  register: install_packages
-  until: install_packages is success
-  retries: 5
-  delay: 2
-  with_items: "{{ sahara_distro_packages }}"
-
+# TODO(odyssey4me):
+# This can be simplified once all the roles are using
+# python_venv_build. We can then switch to using a
+# set of constraints in pip.conf inside the venv,
+# perhaps prepared by giving a giving a list of
+# constraints to the role.
 - name: Create developer mode constraint file
   copy:
     dest: "/opt/developer-pip-constraints.txt"
@@ -33,107 +27,22 @@
   when:
     - sahara_developer_mode | bool
 
-- name: Retrieve checksum for venv download
-  uri:
-    url: "{{ sahara_venv_download_url | replace('tgz', 'checksum') }}"
-    return_content: yes
-  register: sahara_venv_checksum
-  when: sahara_venv_download | bool
-
-- name: Attempt venv download
-  get_url:
-    url: "{{ sahara_venv_download_url }}"
-    dest: "/var/cache/{{ sahara_venv_download_url | basename }}"
-    checksum: "sha1:{{ sahara_venv_checksum.content | trim }}"
-  register: sahara_get_venv
-  when: sahara_venv_download | bool
-
-- name: Remove existing venv
-  file:
-    path: "{{ sahara_bin | dirname }}"
-    state: absent
-  when: sahara_get_venv is changed
-
-- name: Create sahara venv dir
-  file:
-    path: "{{ sahara_bin | dirname }}"
-    state: directory
-    mode: "0755"
-  register: sahara_venv_dir
-  when: sahara_get_venv is changed
-
-- name: Unarchive pre-built venv
-  unarchive:
-    src: "/var/cache/{{ sahara_venv_download_url | basename }}"
-    dest: "{{ sahara_bin | dirname }}"
-    copy: "no"
-  when: sahara_get_venv is changed
-  notify:
-    - Restart sahara services
-
-- name: Install pip packages (venv)
-  pip:
-    name: "{{ sahara_pip_packages }}"
-    state: "{{ sahara_pip_package_state }}"
-    virtualenv: "{{ sahara_bin | dirname }}"
-    virtualenv_site_packages: "no"
-    extra_args: >-
-      {{ sahara_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
-      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
-      {{ pip_install_options | default('') }}
-  register: install_packages
-  until: install_packages is success
-  retries: 5
-  delay: 2
-  when: sahara_get_venv | failed or sahara_get_venv | skipped
-  notify:
-    - Restart sahara services
-
-- name: Remove python from path first (CentOS, openSUSE)
-  file:
-    path:  "{{ sahara_bin | dirname }}/bin/python2.7"
-    state: "absent"
+- name: Ensure remote wheel building is disabled in developer mode
+  set_fact:
+    venv_build_host: "{{ ansible_hostname }}"
   when:
-    - ansible_pkg_mgr in ['yum', 'zypper']
-    - sahara_get_venv is changed
+    - sahara_developer_mode | bool
 
-# NOTE(odyssey4me):
-# We reinitialize the venv to ensure that the right
-# version of python is in the venv, but we do not
-# want virtualenv to also replace pip, setuptools
-# and wheel so we tell it not to.
-# We do not use --always-copy for CentOS/SuSE due
-# to https://github.com/pypa/virtualenv/issues/565
-- name: Update virtualenv path
-  shell: |
-    find {{ sahara_bin }} -name \*.pyc -delete
-    sed -si '1s/^.*python.*$/#!{{ sahara_bin | replace ('/','\/') }}\/python/' {{ sahara_bin }}/*
-    virtualenv {{ sahara_bin | dirname }} \
-        {{ (ansible_pkg_mgr == 'apt') | ternary('--always-copy', '') }} \
-        --no-pip \
-        --no-setuptools \
-        --no-wheel
-  when: sahara_get_venv is changed
-  tags:
-    - skip_ansible_lint
-
-- name: Install optional pip packages
-  pip:
-    name: "{{ sahara_optional_oslomsg_amqp1_pip_packages }}"
-    state: "{{ sahara_pip_package_state }}"
-    virtualenv: "{{ sahara_bin | dirname }}"
-    virtualenv_site_packages: "no"
-  when: sahara_oslomsg_amqp1_enabled
-  register: install_optional_packages
-  until: install_optional_packages is success
-  retries: 5
-  delay: 2
-  notify:
-    - Restart sahara services
-
-- name: Record the venv tag deployed
-  ini_file:
-    dest: "/etc/ansible/facts.d/openstack_ansible.fact"
-    section: sahara
-    option: venv_tag
-    value: "{{ sahara_venv_tag }}"
+- name: Install the python venv
+  include_role:
+    name: "python_venv_build"
+    private: yes
+  vars:
+    venv_install_destination_path: "{{ sahara_bin | dirname }}"
+    venv_install_distro_package_list: "{{ sahara_distro_packages }}"
+    venv_pip_install_args: "{{ sahara_pip_install_args }}"
+    venv_pip_packages: "{{ (sahara_oslomsg_amqp1_enabled | bool) | ternary(sahara_pip_packages + sahara_optional_oslomsg_amqp1_pip_packages, sahara_pip_packages) }}"
+    venv_facts_when_changed:
+      - section: "sahara"
+        option: "venv_tag"
+        value: "{{ sahara_venv_tag }}"

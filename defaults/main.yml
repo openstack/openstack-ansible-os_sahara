@@ -30,8 +30,19 @@ sahara_developer_mode: false
 sahara_developer_constraints:
   - "git+{{ sahara_git_repo }}@{{ sahara_git_install_branch }}#egg=sahara"
 
+# TODO(odyssey4me):
+# This can be simplified once all the roles are using
+# python_venv_build. We can then switch to using a
+# set of constraints in pip.conf inside the venv,
+# perhaps prepared by giving a giving a list of
+# constraints to the role.
+sahara_pip_install_args: >-
+  {{ sahara_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
+  {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''), '') }}
+  {{ pip_install_options | default('') }}
+
 # Name of the virtual env to deploy into
-sahara_venv_tag: untagged
+sahara_venv_tag: "{{ venv_tag | default('untagged') }}"
 sahara_bin: "/openstack/venvs/sahara-{{ sahara_venv_tag }}/bin"
 
 sahara_etc_dir: "{{ sahara_bin | dirname }}/etc/sahara"
