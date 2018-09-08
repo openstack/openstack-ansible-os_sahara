@@ -23,23 +23,23 @@
   tags:
     - always
 
-- include: sahara_pre_install.yml
+- include_tasks: sahara_pre_install.yml
   tags:
     - sahara-install
 
-- include: sahara_install.yml
+- include_tasks: sahara_install.yml
   tags:
     - sahara-install
 
-- include: sahara_post_install.yml
+- include_tasks: sahara_post_install.yml
   tags:
     - sahara-config
 
-- include: sahara_uwsgi.yml
+- include_tasks: sahara_uwsgi.yml
   tags:
     - sahara-config
 
-- include: sahara_init_common.yml
+- include_tasks: sahara_init_common.yml
   tags:
     - sahara-config
 
@@ -63,12 +63,12 @@
     - common-mq
     - sahara-config
 
-- include: sahara_db_setup.yml
+- include_tasks: sahara_db_setup.yml
   when: inventory_hostname == groups['sahara_all'][0]
   tags:
     - sahara-config
 
-- include: sahara_service_setup.yml
+- include_tasks: sahara_service_setup.yml
   when: inventory_hostname == groups['sahara_all'][0]
   tags:
     - sahara-config
