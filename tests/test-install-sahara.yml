@@ -13,20 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Setup the host
-- import_playbook: common/test-setup-host.yml
-
-# Install RabbitMQ/MariaDB
-- import_playbook: common/test-install-infra.yml
-
-# Install Keystone
-- import_playbook: common/test-install-keystone.yml
-
-# Install Nova
-- import_playbook: common/test-install-nova.yml
-
-# Install Sahara
-- import_playbook: test-install-sahara.yml
-
-# Install and execute Tempest
-- import_playbook: common/test-install-tempest.yml
+- name: Install Sahara
+  hosts: sahara_all
+  remote_user: root
+  gather_facts: true
+  any_errors_fatal: true
+  vars_files:
+    - common/test-vars.yml
+  roles:
+    - role: "os_sahara"
