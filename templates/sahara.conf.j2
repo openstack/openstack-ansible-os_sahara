@@ -55,11 +55,9 @@ policy_default_rule = {{ sahara_policy_default_rule }}
 policy_dirs = {{ sahara_policy_dirs }}
 
 # Ceilometer options
-{% if sahara_ceilometer_enabled %}
 [oslo_messaging_notifications]
-driver = messagingv2
+driver = {% if sahara_ceilometer_enabled %}messagingv2{% else %}noop{% endif %}
 transport_url = {{ sahara_oslomsg_notify_transport }}://{% for host in sahara_oslomsg_notify_servers.split(',') %}{{ sahara_oslomsg_notify_userid }}:{{ sahara_oslomsg_notify_password }}@{{ host }}:{{ sahara_oslomsg_notify_port }}{% if not loop.last %},{% else %}/{{ sahara_oslomsg_notify_vhost }}{% if sahara_oslomsg_notify_use_ssl | bool %}?ssl=1{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
-{% endif %}
 
 [oslo_messaging_rabbit]
 ssl = {{ sahara_oslomsg_rpc_use_ssl }}
