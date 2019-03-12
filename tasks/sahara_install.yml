@@ -41,7 +41,7 @@
     venv_install_destination_path: "{{ sahara_bin | dirname }}"
     venv_install_distro_package_list: "{{ sahara_distro_packages }}"
     venv_pip_install_args: "{{ sahara_pip_install_args }}"
-    venv_pip_packages: "{{ (sahara_oslomsg_amqp1_enabled | bool) | ternary(sahara_pip_packages + sahara_optional_oslomsg_amqp1_pip_packages, sahara_pip_packages) }}"
+    venv_pip_packages: "{{ (sahara_oslomsg_amqp1_enabled | bool) | ternary(sahara_pip_packages + sahara_plugin_pip_packages + sahara_optional_oslomsg_amqp1_pip_packages, sahara_pip_packages + sahara_plugin_pip_packages) }}"
     venv_facts_when_changed:
       - section: "sahara"
         option: "venv_tag"

@@ -117,7 +117,7 @@ the NTP package is included in the image. The default NTP server will be
 Configuring plugins
 ~~~~~~~~~~~~~~~~~~~
 
-The following plugins are loaded by default:
+The following plugins are installed and loaded by default:
 
    .. code-block:: yaml
 

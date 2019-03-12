@@ -27,4 +27,7 @@ sahara_developer_mode: true
 sahara_service_password: "secrete"
 sahara_container_mysql_password: "SuperSecrete"
 sahara_oslomsg_rpc_password: "{{ oslomsg_rpc_password }}"
+sahara_service_publicuri: "{{ sahara_service_proto }}://{{ hostvars[groups['sahara_api'][0]]['ansible_host'] }}:{{ sahara_service_port }}"
+sahara_service_internaluri: "{{ sahara_service_publicuri }}"
+sahara_service_adminuri: "{{ sahara_service_publicuri }}"
 sahara_wsgi_processes: 2

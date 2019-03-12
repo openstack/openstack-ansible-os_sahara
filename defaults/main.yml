@@ -146,12 +146,15 @@ sahara_proxy_user_role_names: _member_
 
 # Other plugins can be added to the system by simply extending the list `sahara_plugin_base`.
 sahara_plugin_base:
-  - vanilla
-  - spark
-  - cdh
   - ambari
+  - cdh
+  - mapr
+  - spark
+  - storm
+  - vanilla
 
 sahara_plugin_loaded_base: "{% for plugin in sahara_plugin_base %}{{ plugin }}{% if not loop.last %},{% endif %}{% endfor %}"
+sahara_plugin_pip_packages: "{{ sahara_plugin_base | map('regex_replace', '^(.*)$', 'sahara-plugin-\\1') | list }}"
 
 ## Cap the maximum number of threads / workers when a user value is unspecified.
 sahara_api_workers_max: 16
