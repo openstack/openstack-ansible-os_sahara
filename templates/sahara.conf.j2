@@ -56,7 +56,7 @@ policy_dirs = {{ sahara_policy_dirs }}
 
 # Ceilometer options
 [oslo_messaging_notifications]
-driver = {% if sahara_ceilometer_enabled %}messagingv2{% else %}noop{% endif %}
+driver = {{ (sahara_ceilometer_enabled | bool) | ternary('messagingv2', 'noop') }}
 transport_url = {{ sahara_oslomsg_notify_transport }}://{% for host in sahara_oslomsg_notify_servers.split(',') %}{{ sahara_oslomsg_notify_userid }}:{{ sahara_oslomsg_notify_password }}@{{ host }}:{{ sahara_oslomsg_notify_port }}{% if not loop.last %},{% else %}/{{ sahara_oslomsg_notify_vhost }}{% if sahara_oslomsg_notify_use_ssl | bool %}?ssl=1{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
 
 [oslo_messaging_rabbit]
