@@ -154,7 +154,13 @@ sahara_plugin_base:
   - vanilla
 
 sahara_plugin_loaded_base: "{% for plugin in sahara_plugin_base %}{{ plugin }}{% if not loop.last %},{% endif %}{% endfor %}"
-sahara_plugin_pip_packages: "{{ sahara_plugin_base | map('regex_replace', '^(.*)$', 'sahara-plugin-\\1') | list }}"
+sahara_plugin_pip_packages:
+  - sahara-plugin-ambari
+  - sahara-plugin-cdh
+  - sahara-plugin-mapr
+  - sahara-plugin-spark
+  - sahara-plugin-storm
+  - sahara-plugin-vanilla
 
 ## Cap the maximum number of threads / workers when a user value is unspecified.
 sahara_api_workers_max: 16
