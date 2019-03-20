@@ -15,6 +15,7 @@ Bugs should be filed on Launchpad, not GitHub: "https://bugs.launchpad.net
 
 When submitting a bug, or working on a bug, please ensure the following
 criteria are met:
+
     * The description clearly states or describes the original problem or root
       cause of the problem.
     * Include historical information on how the problem was identified.
@@ -88,6 +89,7 @@ Issues
 
 When submitting an issue, or working on an issue please ensure the following
 criteria are met:
+
     * The description clearly states or describes the original problem or root
       cause of the problem.
     * Include historical information on how the problem was identified.
