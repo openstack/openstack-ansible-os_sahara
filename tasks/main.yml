@@ -27,7 +27,23 @@
   tags:
     - sahara-install
 
-- include_tasks: sahara_install.yml
+- name: Install the python venv
+  import_role:
+    name: "python_venv_build"
+  vars:
+    venv_build_constraints: "{{ sahara_git_constraints }}"
+    venv_install_destination_path: "{{ sahara_bin | dirname }}"
+    venv_install_distro_package_list: "{{ sahara_distro_packages }}"
+    venv_pip_install_args: "{{ sahara_pip_install_args }}"
+    venv_pip_packages: >-
+      {{ sahara_pip_packages |
+           union(sahara_user_pip_packages) |
+             union(sahara_plugin_pip_packages) |
+               union(((sahara_oslomsg_amqp1_enabled | bool) | ternary(sahara_optional_oslomsg_amqp1_pip_packages, [])))}}
+    venv_facts_when_changed:
+      - section: "sahara"
+        option: "venv_tag"
+        value: "{{ sahara_venv_tag }}"
   tags:
     - sahara-install
 

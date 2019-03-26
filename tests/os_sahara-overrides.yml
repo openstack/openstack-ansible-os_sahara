@@ -23,7 +23,6 @@ tempest_plugins:
 tempest_test_whitelist:
   - sahara_tempest_plugin.tests.api
 
-sahara_developer_mode: true
 sahara_service_password: "secrete"
 sahara_container_mysql_password: "SuperSecrete"
 sahara_oslomsg_rpc_password: "{{ oslomsg_rpc_password }}"

@@ -27,31 +27,18 @@ sahara_pip_package_state: "latest"
 
 sahara_git_repo: https://git.openstack.org/openstack/sahara
 sahara_git_install_branch: master
-sahara_developer_mode: false
-sahara_developer_constraints:
+sahara_upper_constraints_url: "{{ requirements_git_url | default('https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?h=' ~ requirements_git_install_branch | default('master')) }}"
+sahara_git_constraints:
   - "git+{{ sahara_git_repo }}@{{ sahara_git_install_branch }}#egg=sahara"
+  - "--constraint {{ sahara_upper_constraints_url }}"
 
-# TODO(odyssey4me):
-# This can be simplified once all the roles are using
-# python_venv_build. We can then switch to using a
-# set of constraints in pip.conf inside the venv,
-# perhaps prepared by giving a giving a list of
-# constraints to the role.
-sahara_pip_install_args: >-
-  {{ sahara_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
-  {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''), '') }}
-  {{ pip_install_options | default('') }}
+sahara_pip_install_args: "{{ pip_install_options | default('') }}"
 
 # Name of the virtual env to deploy into
 sahara_venv_tag: "{{ venv_tag | default('untagged') }}"
 sahara_bin: "/openstack/venvs/sahara-{{ sahara_venv_tag }}/bin"
 
 sahara_etc_dir: "{{ sahara_bin | dirname }}/etc/sahara"
-
-# venv_download, even when true, will use the fallback method of building the
-# venv from scratch if the venv download fails.
-sahara_venv_download: "{{ not sahara_developer_mode | bool }}"
-sahara_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/sahara.tgz
 
 sahara_db_config: /etc/sahara/sahara.conf
 
@@ -199,6 +186,9 @@ sahara_pip_packages:
 
 sahara_optional_oslomsg_amqp1_pip_packages:
   - oslo.messaging[amqp1]
+
+# Specific pip packages provided by the user
+sahara_user_pip_packages: []
 
 sahara_engine_init_overrides: {}
 sahara_api_init_overrides: {}
