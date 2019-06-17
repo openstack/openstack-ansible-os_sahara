@@ -23,6 +23,40 @@
   tags:
     - always
 
+- import_tasks: db_setup.yml
+  when:
+    - "sahara_services['sahara-api']['group'] in group_names"
+    - "inventory_hostname == ((groups[sahara_services['sahara-api']['group']]| intersect(ansible_play_hosts)) | list)[0]"
+  vars:
+    _oslodb_setup_host: "{{ sahara_db_setup_host }}"
+    _oslodb_databases:
+      - name: "{{ sahara_galera_database }}"
+        users:
+          - username: "{{ sahara_galera_user }}"
+            password: "{{ sahara_container_mysql_password }}"
+  tags:
+    - common-db
+    - sahara-config
+
+- import_tasks: mq_setup.yml
+  when:
+    - "sahara_services['sahara-api']['group'] in group_names"
+    - "inventory_hostname == ((groups[sahara_services['sahara-api']['group']]| intersect(ansible_play_hosts)) | list)[0]"
+  vars:
+    _oslomsg_rpc_setup_host: "{{ sahara_oslomsg_rpc_setup_host }}"
+    _oslomsg_rpc_userid: "{{ sahara_oslomsg_rpc_userid }}"
+    _oslomsg_rpc_password: "{{ sahara_oslomsg_rpc_password }}"
+    _oslomsg_rpc_vhost: "{{ sahara_oslomsg_rpc_vhost }}"
+    _oslomsg_rpc_transport: "{{ sahara_oslomsg_rpc_transport }}"
+    _oslomsg_notify_setup_host: "{{ sahara_oslomsg_notify_setup_host }}"
+    _oslomsg_notify_userid: "{{ sahara_oslomsg_notify_userid }}"
+    _oslomsg_notify_password: "{{ sahara_oslomsg_notify_password }}"
+    _oslomsg_notify_vhost: "{{ sahara_oslomsg_notify_vhost }}"
+    _oslomsg_notify_transport: "{{ sahara_oslomsg_notify_transport }}"
+  tags:
+    - common-mq
+    - sahara-config
+
 - include_tasks: sahara_pre_install.yml
   tags:
     - sahara-install
@@ -59,26 +93,7 @@
   tags:
     - sahara-config
 
-- import_tasks: mq_setup.yml
-  when:
-    - "sahara_services['sahara-api']['group'] in group_names"
-    - "inventory_hostname == ((groups[sahara_services['sahara-api']['group']]| intersect(ansible_play_hosts)) | list)[0]"
-  vars:
-    _oslomsg_rpc_setup_host: "{{ sahara_oslomsg_rpc_setup_host }}"
-    _oslomsg_rpc_userid: "{{ sahara_oslomsg_rpc_userid }}"
-    _oslomsg_rpc_password: "{{ sahara_oslomsg_rpc_password }}"
-    _oslomsg_rpc_vhost: "{{ sahara_oslomsg_rpc_vhost }}"
-    _oslomsg_rpc_transport: "{{ sahara_oslomsg_rpc_transport }}"
-    _oslomsg_notify_setup_host: "{{ sahara_oslomsg_notify_setup_host }}"
-    _oslomsg_notify_userid: "{{ sahara_oslomsg_notify_userid }}"
-    _oslomsg_notify_password: "{{ sahara_oslomsg_notify_password }}"
-    _oslomsg_notify_vhost: "{{ sahara_oslomsg_notify_vhost }}"
-    _oslomsg_notify_transport: "{{ sahara_oslomsg_notify_transport }}"
-  tags:
-    - common-mq
-    - sahara-config
-
-- include_tasks: sahara_db_setup.yml
+- include_tasks: sahara_db_sync.yml
   when: inventory_hostname == groups['sahara_all'][0]
   tags:
     - sahara-config
