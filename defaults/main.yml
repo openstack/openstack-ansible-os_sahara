@@ -205,11 +205,12 @@ sahara_services:
     wsgi_name: sahara-wsgi-api
     uwsgi_port: "{{ sahara_api_service_port }}"
     uwsgi_bind_address: "{{ sahara_api_bind_address }}"
-    program_override: "{{ sahara_bin }}/uwsgi --ini /etc/uwsgi/sahara-api.ini"
+    execstarts: "{{ sahara_bin }}/uwsgi --ini /etc/uwsgi/sahara-api.ini"
   sahara-engine:
     group: sahara_engine
     service_name: sahara-engine
     init_config_overrides: "{{ sahara_engine_init_overrides }}"
+    execstarts: "{{ sahara_bin }}/sahara-engine"
 
 ## Sahara uWSGI settings
 sahara_wsgi_processes_max: 16

@@ -89,9 +89,45 @@
   tags:
     - sahara-config
 
-- import_tasks: sahara_init_common.yml
+- name: Run the systemd service role
+  import_role:
+    name: systemd_service
+  vars:
+    systemd_user_name: "{{ sahara_system_user_name }}"
+    systemd_group_name: "{{ sahara_system_group_name }}"
+    systemd_tempd_prefix: openstack
+    systemd_slice_name: sahara
+    systemd_lock_path: /var/lock/sahara
+    systemd_CPUAccounting: true
+    systemd_BlockIOAccounting: true
+    systemd_MemoryAccounting: true
+    systemd_TasksAccounting: true
+    systemd_services: |-
+      {% set services = [] %}
+      {% for key, value in sahara_services.items() %}
+      {%   if value['group'] in group_names %}
+      {%     set _ = value.update(
+              {
+                'service_key': key,
+                'enabled': 'yes',
+                'state': 'started',
+                'config_overrides': value.init_config_overrides
+              }
+            )
+      %}
+      {%     set _ = value.pop('init_config_overrides') %}
+      {# Note (noonedeadpunk): The following condition is added for backwards compatability #}
+      {# As up to train release sahara role didn't have 'execstarts' in sahara_services keys #}
+      {%     if ('execstarts' not in value) %}
+      {%       set _ = value.update({'execstarts': value.program_override | default(sahara_bin ~ '/' ~ value.service_name)}) %}
+      {%     endif %}
+      {%     set _ = services.append(value) %}
+      {%   endif %}
+      {% endfor %}
+      {{ services }}
   tags:
     - sahara-config
+    - systemd-service
 
 - import_tasks: sahara_db_sync.yml
   when: inventory_hostname == groups['sahara_all'][0]
