@@ -57,7 +57,7 @@
     - common-mq
     - sahara-config
 
-- include_tasks: sahara_pre_install.yml
+- import_tasks: sahara_pre_install.yml
   tags:
     - sahara-install
 
@@ -81,24 +81,24 @@
   tags:
     - sahara-install
 
-- include_tasks: sahara_post_install.yml
+- import_tasks: sahara_post_install.yml
   tags:
     - sahara-config
 
-- include_tasks: sahara_uwsgi.yml
+- import_tasks: sahara_uwsgi.yml
   tags:
     - sahara-config
 
-- include_tasks: sahara_init_common.yml
+- import_tasks: sahara_init_common.yml
   tags:
     - sahara-config
 
-- include_tasks: sahara_db_sync.yml
+- import_tasks: sahara_db_sync.yml
   when: inventory_hostname == groups['sahara_all'][0]
   tags:
     - sahara-config
 
-- include_tasks: sahara_service_setup.yml
+- import_tasks: sahara_service_setup.yml
   when: inventory_hostname == groups['sahara_all'][0]
   tags:
     - sahara-config
