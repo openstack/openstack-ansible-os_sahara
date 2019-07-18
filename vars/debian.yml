@@ -18,4 +18,5 @@ cache_timeout: 600
 # Common apt packages
 sahara_distro_packages:
   - git
+  - libsystemd-dev
   - libxml2-dev

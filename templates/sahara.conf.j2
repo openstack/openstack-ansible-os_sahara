@@ -5,7 +5,7 @@
 use_stderr = False
 
 debug = {{ debug }}
-log_file = /var/log/sahara/sahara.log
+use_journal = True
 fatal_deprecations = {{ sahara_fatal_deprecations }}
 host = {{ sahara_api_bind_address }}
 port = {{ sahara_api_service_port }}

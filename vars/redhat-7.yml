@@ -13,7 +13,8 @@
 sahara_distro_packages:
   - cronie
   - cronie-anacron
-  - rpcbind
   - git
-  - which
   - libxml2-devel
+  - rpcbind
+  - systemd-devel
+  - which

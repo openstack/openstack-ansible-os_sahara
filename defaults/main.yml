@@ -181,6 +181,7 @@ sahara_pip_packages:
   - python-saharaclient
   - python-keystoneclient
   - sahara
+  - systemd-python
   - warlock
   - uwsgi
 

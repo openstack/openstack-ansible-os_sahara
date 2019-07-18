@@ -13,6 +13,7 @@
 sahara_distro_packages:
   - cronie
   - cronie-anacron
-  - rpcbind
   - git-core
+  - rpcbind
+  - systemd-devel
   - which
