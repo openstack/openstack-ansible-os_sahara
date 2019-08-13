@@ -16,19 +16,10 @@
 - project:
     templates:
       - check-requirements
+      - openstack-ansible-deploy-aio_metal-jobs
+      # Note: Uncomment the next template when distro installs are
+      # ready for the 3 major distros:
+      # - openstack-ansible-deploy-aio_distro_metal-jobs
       - openstack-ansible-linters
       - publish-openstack-docs-pti
       - release-notes-jobs-python3
-    check:
-      jobs:
-        - openstack-ansible-deploy-aio_metal_sahara-centos-7
-        - openstack-ansible-deploy-aio_metal_sahara-debian-stable
-        - openstack-ansible-deploy-aio_metal_sahara-ubuntu-bionic
-    gate:
-      jobs:
-        - openstack-ansible-deploy-aio_metal_sahara-centos-7
-        - openstack-ansible-deploy-aio_metal_sahara-debian-stable
-        - openstack-ansible-deploy-aio_metal_sahara-ubuntu-bionic
-    experimental:
-      jobs:
-        - openstack-ansible-deploy-aio_metal_sahara-opensuse-150
