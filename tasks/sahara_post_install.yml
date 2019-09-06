@@ -41,6 +41,7 @@
       config_type: "json"
   notify:
     - Restart sahara services
+    - Restart uwsgi services
 
 - name: Drop rootwrap filter(s)
   copy:

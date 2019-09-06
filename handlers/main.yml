@@ -13,10 +13,10 @@
 
 - name: Restart sahara services
   systemd:
-    name: "{{ item.value.service_name }}"
+    name: "{{ item.service_name }}"
     state: "restarted"
     daemon_reload: yes
-  with_dict: "{{ sahara_services }}"
-  when: inventory_hostname in groups[item.value.group]
+  with_items: "{{ filtered_sahara_services }}"
+  when: inventory_hostname in groups[item.group]
   listen:
     - "venv changed"

@@ -183,7 +183,6 @@ sahara_pip_packages:
   - sahara
   - systemd-python
   - warlock
-  - uwsgi
 
 sahara_optional_oslomsg_amqp1_pip_packages:
   - oslo.messaging[amqp1]
@@ -200,13 +199,11 @@ sahara_services:
     group: sahara_api
     service_name: sahara-api
     init_config_overrides: "{{ sahara_api_init_overrides }}"
-    wsgi_overrides: "{{ sahara_api_uwsgi_ini_overrides }}"
     wsgi_app: True
-    log_string: "--logto "
     wsgi_name: sahara-wsgi-api
+    uwsgi_overrides: "{{ sahara_api_uwsgi_ini_overrides }}"
     uwsgi_port: "{{ sahara_api_service_port }}"
     uwsgi_bind_address: "{{ sahara_api_bind_address }}"
-    execstarts: "{{ sahara_bin }}/uwsgi --ini /etc/uwsgi/sahara-api.ini"
   sahara-engine:
     group: sahara_engine
     service_name: sahara-engine
@@ -217,7 +214,6 @@ sahara_services:
 sahara_wsgi_processes_max: 16
 sahara_wsgi_processes: "{{ [[ansible_processor_vcpus|default(1), 1] | max * 2, sahara_wsgi_processes_max] | min }}"
 sahara_wsgi_threads: 1
-sahara_wsgi_buffer_size: 65535
 
 # This variable is used by the repo_build process to determine
 # which host group to check for members of before building the

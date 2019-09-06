@@ -85,9 +85,15 @@
   tags:
     - sahara-config
 
-- import_tasks: sahara_uwsgi.yml
+- name: Import uwsgi role
+  import_role:
+    name: uwsgi
+  vars:
+    uwsgi_services: "{{ uwsgi_sahara_services }}"
+    uwsgi_install_method: "source"
   tags:
     - sahara-config
+    - uwsgi
 
 - name: Run the systemd service role
   import_role:
@@ -102,29 +108,7 @@
     systemd_BlockIOAccounting: true
     systemd_MemoryAccounting: true
     systemd_TasksAccounting: true
-    systemd_services: |-
-      {% set services = [] %}
-      {% for key, value in sahara_services.items() %}
-      {%   if value['group'] in group_names %}
-      {%     set _ = value.update(
-              {
-                'service_key': key,
-                'enabled': 'yes',
-                'state': 'started',
-                'config_overrides': value.init_config_overrides
-              }
-            )
-      %}
-      {%     set _ = value.pop('init_config_overrides') %}
-      {# Note (noonedeadpunk): The following condition is added for backwards compatability #}
-      {# As up to train release sahara role didn't have 'execstarts' in sahara_services keys #}
-      {%     if ('execstarts' not in value) %}
-      {%       set _ = value.update({'execstarts': value.program_override | default(sahara_bin ~ '/' ~ value.service_name)}) %}
-      {%     endif %}
-      {%     set _ = services.append(value) %}
-      {%   endif %}
-      {% endfor %}
-      {{ services }}
+    systemd_services: "{{ filtered_sahara_services }}"
   tags:
     - sahara-config
     - systemd-service
