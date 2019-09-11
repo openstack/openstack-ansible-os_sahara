@@ -65,6 +65,7 @@
   import_role:
     name: "python_venv_build"
   vars:
+    venv_python_executable: "{{ sahara_venv_python_executable }}"
     venv_build_constraints: "{{ sahara_git_constraints }}"
     venv_install_destination_path: "{{ sahara_bin | dirname }}"
     venv_install_distro_package_list: "{{ sahara_distro_packages }}"
