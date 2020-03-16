@@ -180,12 +180,16 @@ sahara_pip_packages:
   - keystonemiddleware
   - osprofiler
   - PyMySQL
+  - pymemcache
   - python-memcached
   - python-saharaclient
   - python-keystoneclient
   - sahara
   - systemd-python
   - warlock
+
+# Memcached override
+sahara_memcached_servers: "{{ memcached_servers }}"
 
 sahara_optional_oslomsg_amqp1_pip_packages:
   - oslo.messaging[amqp1]
