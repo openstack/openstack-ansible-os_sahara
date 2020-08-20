@@ -29,6 +29,9 @@
     - "inventory_hostname == ((groups[sahara_services['sahara-api']['group']]| intersect(ansible_play_hosts)) | list)[0]"
   vars:
     _oslodb_setup_host: "{{ sahara_db_setup_host }}"
+    _oslodb_ansible_python_interpreter: "{{ sahara_db_setup_python_interpreter }}"
+    _oslodb_setup_endpoint: "{{ sahara_galera_address }}"
+    _oslodb_setup_port: "{{ sahara_galera_port }}"
     _oslodb_databases:
       - name: "{{ sahara_galera_database }}"
         users:

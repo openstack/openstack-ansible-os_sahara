@@ -87,12 +87,14 @@ sahara_oslomsg_notify_vhost: "{{ sahara_oslomsg_rpc_vhost }}"
 sahara_oslomsg_amqp1_enabled: "{{ sahara_oslomsg_rpc_transport == 'amqp' }}"
 
 ## Database info
-sahara_db_setup_host: "{{ ('galera_all' in groups) | ternary(groups['galera_all'][0], 'localhost') }}"
+sahara_db_setup_host: "{{ openstack_db_setup_host | default('localhost') }}"
+sahara_db_setup_python_interpreter: "{{ openstack_db_setup_python_interpreter | default((sahara_db_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable'])) }}"
 sahara_galera_address: "{{ galera_address | default('127.0.0.1') }}"
 sahara_galera_database: sahara
 sahara_galera_user: sahara
 sahara_galera_use_ssl: "{{ galera_use_ssl | default(False) }}"
 sahara_galera_ssl_ca_cert: "{{ galera_ssl_ca_cert | default('/etc/ssl/certs/galera-ca.pem') }}"
+sahara_galera_port: 3306
 
 sahara_role_name: admin
 sahara_api_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0') }}"
