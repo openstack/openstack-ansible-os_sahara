@@ -25,8 +25,7 @@
 
 - import_tasks: db_setup.yml
   when:
-    - "sahara_services['sahara-api']['group'] in group_names"
-    - "inventory_hostname == ((groups[sahara_services['sahara-api']['group']]| intersect(ansible_play_hosts)) | list)[0]"
+    - _sahara_is_first_play_host
   vars:
     _oslodb_setup_host: "{{ sahara_db_setup_host }}"
     _oslodb_ansible_python_interpreter: "{{ sahara_db_setup_python_interpreter }}"
@@ -43,8 +42,7 @@
 
 - import_tasks: mq_setup.yml
   when:
-    - "sahara_services['sahara-api']['group'] in group_names"
-    - "inventory_hostname == ((groups[sahara_services['sahara-api']['group']]| intersect(ansible_play_hosts)) | list)[0]"
+    - _sahara_is_first_play_host
   vars:
     _oslomsg_rpc_setup_host: "{{ sahara_oslomsg_rpc_setup_host }}"
     _oslomsg_rpc_userid: "{{ sahara_oslomsg_rpc_userid }}"
@@ -118,7 +116,7 @@
     - systemd-service
 
 - import_tasks: sahara_db_sync.yml
-  when: inventory_hostname == groups['sahara_all'][0]
+  when: _sahara_is_first_play_host
   tags:
     - sahara-config
 
@@ -149,7 +147,7 @@
       - name: "{{ sahara_service_name }}"
         type: "{{ sahara_service_type }}"
         description: "{{ sahara_service_description }}"
-  when: inventory_hostname == groups['sahara_all'][0]
+  when: _sahara_is_first_play_host
   tags:
     - sahara-config
 
