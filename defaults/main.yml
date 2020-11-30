@@ -156,7 +156,7 @@ sahara_plugin_pip_packages:
 
 ## Cap the maximum number of threads / workers when a user value is unspecified.
 sahara_api_workers_max: 16
-sahara_api_workers: "{{ [[ansible_processor_vcpus|default(2) // 2, 1] | max, sahara_api_workers_max] | min }}"
+sahara_api_workers: "{{ [[(ansible_processor_vcpus//ansible_processor_threads_per_core)|default(1), 1] | max * 2, sahara_api_workers_max] | min }}"
 
 sahara_task_executor: taskflow
 sahara_digest_algorithm: sha256
