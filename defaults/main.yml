@@ -23,10 +23,9 @@ sahara_venv_python_executable: "{{ openstack_venv_python_executable | default('p
 sahara_service_setup_host: "{{ openstack_service_setup_host | default('localhost') }}"
 sahara_service_setup_host_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default((sahara_service_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable'])) }}"
 
-# Set the package install state for distribution and pip packages
+# Set the package install state for distribution packages
 # Options are 'present' and 'latest'
-sahara_package_state: "latest"
-sahara_pip_package_state: "latest"
+sahara_package_state: "{{ package_state | default('latest') }}"
 
 sahara_git_repo: https://opendev.org/openstack/sahara
 sahara_git_install_branch: master
@@ -46,7 +45,7 @@ sahara_etc_dir: "{{ sahara_bin | dirname }}/etc/sahara"
 sahara_db_config: /etc/sahara/sahara.conf
 
 # Enable/Disable Ceilometer
-sahara_ceilometer_enabled: False
+sahara_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
 
 sahara_profiler_enabled: False
 sahara_fatal_deprecations: False
@@ -94,14 +93,14 @@ sahara_galera_database: sahara
 sahara_galera_user: sahara
 sahara_galera_use_ssl: "{{ galera_use_ssl | default(False) }}"
 sahara_galera_ssl_ca_cert: "{{ galera_ssl_ca_cert | default('/etc/ssl/certs/galera-ca.pem') }}"
-sahara_galera_port: 3306
+sahara_galera_port: "{{ galera_port | default('3306') }}"
 
 sahara_role_name: admin
 sahara_api_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0') }}"
 sahara_api_service_port: 8386
 
 ## Service Type and Data
-sahara_service_region: RegionOne
+sahara_service_region: "{{ service_region | default('RegionOne') }}"
 sahara_service_name: sahara
 sahara_service_port: 8386
 sahara_service_proto: http
@@ -174,7 +173,7 @@ sahara_policy_dirs: policy.d
 #  "clusters:get_all": ""
 #  "clusters:create": ""
 
-sahara_service_in_ldap: False
+sahara_service_in_ldap: "{{ service_ldap_backend_enabled | default(False) }}"
 
 # Common pip packages
 sahara_pip_packages:
