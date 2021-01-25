@@ -31,7 +31,6 @@ sahara_git_repo: https://opendev.org/openstack/sahara
 sahara_git_install_branch: master
 sahara_upper_constraints_url: "{{ requirements_git_url | default('https://releases.openstack.org/constraints/upper/' ~ requirements_git_install_branch | default('master')) }}"
 sahara_git_constraints:
-  - "git+{{ sahara_git_repo }}@{{ sahara_git_install_branch }}#egg=sahara"
   - "--constraint {{ sahara_upper_constraints_url }}"
 
 sahara_pip_install_args: "{{ pip_install_options | default('') }}"
@@ -185,7 +184,7 @@ sahara_pip_packages:
   - python-memcached
   - python-saharaclient
   - python-keystoneclient
-  - sahara
+  - "git+{{ sahara_git_repo }}@{{ sahara_git_install_branch }}#egg=sahara"
   - systemd-python
   - warlock
 
