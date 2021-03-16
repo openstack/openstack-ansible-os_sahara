@@ -21,7 +21,7 @@ sahara_venv_python_executable: "{{ openstack_venv_python_executable | default('p
 # for the service setup. The host must already have
 # clouds.yaml properly configured.
 sahara_service_setup_host: "{{ openstack_service_setup_host | default('localhost') }}"
-sahara_service_setup_host_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default((sahara_service_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable'])) }}"
+sahara_service_setup_host_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default((sahara_service_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable'])) }}"
 
 # Set the package install state for distribution packages
 # Options are 'present' and 'latest'
@@ -86,7 +86,7 @@ sahara_oslomsg_amqp1_enabled: "{{ sahara_oslomsg_rpc_transport == 'amqp' }}"
 
 ## Database info
 sahara_db_setup_host: "{{ openstack_db_setup_host | default('localhost') }}"
-sahara_db_setup_python_interpreter: "{{ openstack_db_setup_python_interpreter | default((sahara_db_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable'])) }}"
+sahara_db_setup_python_interpreter: "{{ openstack_db_setup_python_interpreter | default((sahara_db_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable'])) }}"
 sahara_galera_address: "{{ galera_address | default('127.0.0.1') }}"
 sahara_galera_database: sahara
 sahara_galera_user: sahara
@@ -154,7 +154,7 @@ sahara_plugin_pip_packages:
 
 ## Cap the maximum number of threads / workers when a user value is unspecified.
 sahara_api_workers_max: 16
-sahara_api_workers: "{{ [[(ansible_processor_vcpus//ansible_processor_threads_per_core)|default(1), 1] | max * 2, sahara_api_workers_max] | min }}"
+sahara_api_workers: "{{ [[(ansible_facts['processor_vcpus']//ansible_facts['processor_threads_per_core'])|default(1), 1] | max * 2, sahara_api_workers_max] | min }}"
 
 sahara_task_executor: taskflow
 sahara_digest_algorithm: sha256
@@ -219,7 +219,7 @@ sahara_services:
 
 ## Sahara uWSGI settings
 sahara_wsgi_processes_max: 16
-sahara_wsgi_processes: "{{ [[ansible_processor_vcpus|default(1), 1] | max * 2, sahara_wsgi_processes_max] | min }}"
+sahara_wsgi_processes: "{{ [[ansible_facts['processor_vcpus']|default(1), 1] | max * 2, sahara_wsgi_processes_max] | min }}"
 sahara_wsgi_threads: 1
 
 ## Tunable overrides
