@@ -35,13 +35,31 @@
       group: "root"
       config_overrides: "{{ sahara_rootwrap_conf_overrides }}"
       config_type: "ini"
-    - src: "policy.json.j2"
-      dest: "/etc/sahara/policy.json"
-      config_overrides: "{{ sahara_policy_overrides }}"
-      config_type: "json"
   notify:
     - Restart sahara services
     - Restart uwsgi services
+
+- name: Implement policy.yaml if there are overrides configured
+  config_template:
+    content: "{{ sahara_policy_overrides }}"
+    dest: "/etc/sahara/policy.yaml"
+    owner: "{{ sahara_system_user_name }}"
+    group: "{{ sahara_system_group_name }}"
+    mode: "0644"
+    config_type: yaml
+  when:
+    - sahara_policy_overrides | length > 0
+  tags:
+    - sahara-policy-override
+
+- name: Remove legacy policy.yaml file
+  file:
+    path: "/etc/sahara/policy.yaml"
+    state: absent
+  when:
+    - sahara_policy_overrides | length == 0
+  tags:
+    - sahara-policy-override
 
 - name: Drop rootwrap filter(s)
   copy:
