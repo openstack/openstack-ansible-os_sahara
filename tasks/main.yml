@@ -75,7 +75,7 @@
       {{ sahara_pip_packages |
            union(sahara_user_pip_packages) |
              union(sahara_plugin_pip_packages) |
-               union(((sahara_oslomsg_amqp1_enabled | bool) | ternary(sahara_optional_oslomsg_amqp1_pip_packages, [])))}}
+               union(((sahara_oslomsg_amqp1_enabled | bool) | ternary(sahara_optional_oslomsg_amqp1_pip_packages, []))) }}
     venv_facts_when_changed:
       - section: "sahara"
         option: "venv_tag"
