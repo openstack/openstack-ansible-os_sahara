@@ -22,12 +22,10 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_metal_sahara-centos-7
-        - openstack-ansible-deploy-aio_metal_sahara-debian-stable
         - openstack-ansible-deploy-aio_metal_sahara-ubuntu-bionic
     gate:
       jobs:
         - openstack-ansible-deploy-aio_metal_sahara-centos-7
-        - openstack-ansible-deploy-aio_metal_sahara-debian-stable
         - openstack-ansible-deploy-aio_metal_sahara-ubuntu-bionic
     experimental:
       jobs:
