@@ -23,7 +23,12 @@
   tags:
     - always
 
-- import_tasks: db_setup.yml
+- include_role:
+    name: openstack.osa.db_setup
+    apply:
+      tags:
+        - common-db
+        - sahara-config
   when:
     - _sahara_is_first_play_host
   vars:
@@ -37,10 +42,14 @@
           - username: "{{ sahara_galera_user }}"
             password: "{{ sahara_container_mysql_password }}"
   tags:
-    - common-db
-    - sahara-config
+    - always
 
-- import_tasks: mq_setup.yml
+- include_role:
+    name: openstack.osa.mq_setup
+    apply:
+      tags:
+        - common-mq
+        - sahara-config
   when:
     - _sahara_is_first_play_host
   vars:
@@ -55,8 +64,7 @@
     _oslomsg_notify_vhost: "{{ sahara_oslomsg_notify_vhost }}"
     _oslomsg_notify_transport: "{{ sahara_oslomsg_notify_transport }}"
   tags:
-    - common-mq
-    - sahara-config
+    - always
 
 - import_tasks: sahara_pre_install.yml
   tags:
@@ -120,7 +128,12 @@
   tags:
     - sahara-config
 
-- import_tasks: service_setup.yml
+- include_role:
+    name: openstack.osa.service_setup
+    apply:
+      tags:
+        - common-service
+        - sahara-config
   vars:
     _service_adminuri_insecure: "{{ keystone_service_adminuri_insecure }}"
     _service_in_ldap: "{{ sahara_service_in_ldap }}"
@@ -149,7 +162,7 @@
         description: "{{ sahara_service_description }}"
   when: _sahara_is_first_play_host
   tags:
-    - sahara-config
+    - always
 
 - name: Flush handlers
   meta: flush_handlers
