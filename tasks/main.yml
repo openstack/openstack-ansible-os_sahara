@@ -145,7 +145,7 @@
     _service_users:
       - name: "{{ sahara_service_user_name }}"
         password: "{{ sahara_service_password }}"
-        role: "{{ sahara_role_name }}"
+        role: "{{ sahara_service_role_names }}"
     _service_endpoints:
       - service: "{{ sahara_service_name }}"
         interface: "public"

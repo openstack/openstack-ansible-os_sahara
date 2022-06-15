@@ -44,6 +44,10 @@ project_name = {{ sahara_service_project_name }}
 username = {{ sahara_service_user_name }}
 password = {{ sahara_service_password }}
 
+service_token_roles_required = {{ sahara_service_token_roles_required | bool }}
+service_token_roles = {{ sahara_service_token_roles | join(',') }}
+service_type = {{ sahara_service_type }}
+
 memcached_servers = {{ sahara_memcached_servers }}
 
 token_cache_time = 300

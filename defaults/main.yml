@@ -102,7 +102,6 @@ sahara_db_max_pool_size: "{{ openstack_db_max_pool_size | default('5') }}"
 sahara_db_pool_timeout: "{{ openstack_db_pool_timeout | default('30') }}"
 sahara_db_connection_recycle_time: "{{ openstack_db_connection_recycle_time | default('600') }}"
 
-sahara_role_name: admin
 sahara_api_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0') }}"
 sahara_api_service_port: 8386
 
@@ -123,6 +122,12 @@ sahara_service_project_domain_id: default
 sahara_service_user_domain_id: default
 sahara_service_project_domain_name: Default
 sahara_service_user_domain_name: Default
+sahara_service_role_names:
+  - admin
+  - service
+sahara_service_token_roles:
+  - service
+sahara_service_token_roles_required: "{{ openstack_service_token_roles_required | default(True) }}"
 sahara_service_publicuri: "{{ sahara_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ sahara_service_port }}"
 sahara_service_internaluri: "{{ sahara_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ sahara_service_port }}"
 sahara_service_adminuri: "{{ sahara_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ sahara_service_port }}"
