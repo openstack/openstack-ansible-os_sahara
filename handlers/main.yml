@@ -20,3 +20,4 @@
   when: inventory_hostname in groups[item.group]
   listen:
     - "venv changed"
+    - "systemd service changed"
