@@ -224,6 +224,7 @@ sahara_services:
     uwsgi_overrides: "{{ sahara_api_uwsgi_ini_overrides }}"
     uwsgi_port: "{{ sahara_api_service_port }}"
     uwsgi_bind_address: "{{ sahara_api_bind_address }}"
+    uwsgi_tls: "{{ sahara_backend_ssl | ternary(sahara_uwsgi_tls, {}) }}"
   sahara-engine:
     group: sahara_engine
     service_name: sahara-engine
@@ -234,6 +235,9 @@ sahara_services:
 sahara_wsgi_processes_max: 16
 sahara_wsgi_processes: "{{ [[ansible_facts['processor_vcpus']|default(1), 1] | max * 2, sahara_wsgi_processes_max] | min }}"
 sahara_wsgi_threads: 1
+sahara_uwsgi_tls:
+  crt: "{{ sahara_ssl_cert }}"
+  key: "{{ sahara_ssl_key }}"
 
 ## Tunable overrides
 sahara_api_paste_ini_overrides: {}
@@ -241,3 +245,51 @@ sahara_conf_overrides: {}
 sahara_rootwrap_conf_overrides: {}
 sahara_policy_overrides: {}
 sahara_api_uwsgi_ini_overrides: {}
+
+###
+### Backend TLS
+###
+
+# Define if communication between haproxy and service backends should be
+# encrypted with TLS.
+sahara_backend_ssl: "{{ openstack_service_backend_ssl | default(False) }}"
+
+# Storage location for SSL certificate authority
+sahara_pki_dir: "{{ openstack_pki_dir | default('/etc/openstack_deploy/pki') }}"
+
+# Delegated host for operating the certificate authority
+sahara_pki_setup_host: "{{ openstack_pki_setup_host | default('localhost') }}"
+
+# sahara server certificate
+sahara_pki_keys_path: "{{ sahara_pki_dir ~ '/certs/private/' }}"
+sahara_pki_certs_path: "{{ sahara_pki_dir ~ '/certs/certs/' }}"
+sahara_pki_intermediate_cert_name: "{{ openstack_pki_service_intermediate_cert_name | default('ExampleCorpIntermediate') }}"
+sahara_pki_regen_cert: ''
+sahara_pki_san: "{{ openstack_pki_san | default('DNS:' ~ ansible_facts['hostname'] ~ ',IP:' ~ management_address) }}"
+sahara_pki_certificates:
+  - name: "sahara_{{ ansible_facts['hostname'] }}"
+    provider: ownca
+    cn: "{{ ansible_facts['hostname'] }}"
+    san: "{{ sahara_pki_san }}"
+    signed_by: "{{ sahara_pki_intermediate_cert_name }}"
+
+# sahara destination files for SSL certificates
+sahara_ssl_cert: /etc/sahara/sahara.pem
+sahara_ssl_key: /etc/sahara/sahara.key
+
+# Installation details for SSL certificates
+sahara_pki_install_certificates:
+  - src: "{{ sahara_user_ssl_cert | default(sahara_pki_certs_path ~ 'sahara_' ~ ansible_facts['hostname'] ~ '-chain.crt') }}"
+    dest: "{{ sahara_ssl_cert }}"
+    owner: "{{ sahara_system_user_name }}"
+    group: "{{ sahara_system_user_name }}"
+    mode: "0644"
+  - src: "{{ sahara_user_ssl_key | default(sahara_pki_keys_path ~ 'sahara_' ~ ansible_facts['hostname'] ~ '.key.pem') }}"
+    dest: "{{ sahara_ssl_key }}"
+    owner: "{{ sahara_system_user_name }}"
+    group: "{{ sahara_system_user_name }}"
+    mode: "0600"
+
+# Define user-provided SSL certificates
+#sahara_user_ssl_cert: <path to cert on ansible deployment host>
+#sahara_user_ssl_key: <path to cert on ansible deployment host>

@@ -70,6 +70,26 @@
   tags:
     - sahara-install
 
+- name: Create and install SSL certificates
+  include_role:
+    name: pki
+    tasks_from: main_certs.yml
+    apply:
+      tags:
+        - sahara-config
+        - pki
+  vars:
+    pki_setup_host: "{{ sahara_pki_setup_host }}"
+    pki_dir: "{{ sahara_pki_dir }}"
+    pki_create_certificates: "{{ sahara_user_ssl_cert is not defined and sahara_user_ssl_key is not defined }}"
+    pki_regen_cert: "{{ sahara_pki_regen_cert }}"
+    pki_certificates: "{{ sahara_pki_certificates }}"
+    pki_install_certificates: "{{ sahara_pki_install_certificates }}"
+  when:
+    - sahara_backend_ssl
+  tags:
+    - always
+
 - name: Install the python venv
   import_role:
     name: "python_venv_build"
