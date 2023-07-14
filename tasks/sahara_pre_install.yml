@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: create the system group
+- name: Create the system group
   group:
     name: "{{ sahara_system_group_name }}"
     state: "present"
@@ -31,9 +31,9 @@
   file:
     path: "{{ item.path }}"
     state: directory
-    owner: "{{ item.owner|default(sahara_system_user_name) }}"
-    group: "{{ item.group|default(sahara_system_group_name) }}"
-    mode: "{{ item.mode|default('0755') }}"
+    owner: "{{ item.owner | default(sahara_system_user_name) }}"
+    group: "{{ item.group | default(sahara_system_group_name) }}"
+    mode: "{{ item.mode | default('0755') }}"
   with_items:
     - { path: "/openstack/venvs", mode: "0755", owner: "root", group: "root" }
     - { path: "/etc/sahara" }

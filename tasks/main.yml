@@ -23,7 +23,8 @@
   tags:
     - always
 
-- include_role:
+- name: Including osa.db_setup role
+  include_role:
     name: openstack.osa.db_setup
     apply:
       tags:
@@ -44,7 +45,8 @@
   tags:
     - always
 
-- include_role:
+- name: Including osa.mq_setup role
+  include_role:
     name: openstack.osa.mq_setup
     apply:
       tags:
@@ -66,7 +68,8 @@
   tags:
     - always
 
-- import_tasks: sahara_pre_install.yml
+- name: Importing sahara_pre_install tasks
+  import_tasks: sahara_pre_install.yml
   tags:
     - sahara-install
 
@@ -111,7 +114,8 @@
   tags:
     - sahara-install
 
-- import_tasks: sahara_post_install.yml
+- name: Importing sahara_post_install tasks
+  import_tasks: sahara_post_install.yml
   tags:
     - sahara-config
 
@@ -134,21 +138,23 @@
     systemd_tempd_prefix: openstack
     systemd_slice_name: sahara
     systemd_lock_path: /var/lock/sahara
-    systemd_CPUAccounting: true
-    systemd_BlockIOAccounting: true
-    systemd_MemoryAccounting: true
-    systemd_TasksAccounting: true
+    systemd_service_cpu_accounting: true
+    systemd_service_block_io_accounting: true
+    systemd_service_memory_accounting: true
+    systemd_service_tasks_accounting: true
     systemd_services: "{{ filtered_sahara_services }}"
   tags:
     - sahara-config
     - systemd-service
 
-- import_tasks: sahara_db_sync.yml
+- name: Importing sahara_db_sync tasks
+  import_tasks: sahara_db_sync.yml
   when: _sahara_is_first_play_host
   tags:
     - sahara-config
 
-- include_role:
+- name: Including osa.service_setup role
+  include_role:
     name: openstack.osa.service_setup
     apply:
       tags:

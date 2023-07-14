@@ -67,6 +67,7 @@
     dest: "/etc/sahara/rootwrap.d/"
     owner: "root"
     group: "root"
+    mode: "0644"
   with_fileglob:
     - rootwrap.d/*
   notify:

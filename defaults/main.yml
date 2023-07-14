@@ -14,14 +14,18 @@
 ## Verbosity Options
 debug: False
 
-#python venv executable
+# python venv executable
 sahara_venv_python_executable: "{{ openstack_venv_python_executable | default('python3') }}"
 
 # Set the host which will execute the shade modules
 # for the service setup. The host must already have
 # clouds.yaml properly configured.
 sahara_service_setup_host: "{{ openstack_service_setup_host | default('localhost') }}"
-sahara_service_setup_host_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default((sahara_service_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable'])) }}"
+sahara_service_setup_host_python_interpreter: >-
+  {{
+    openstack_service_setup_host_python_interpreter | default(
+      (sahara_service_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable']))
+  }}
 
 # Set the package install state for distribution packages
 # Options are 'present' and 'latest'
@@ -29,7 +33,8 @@ sahara_package_state: "{{ package_state | default('latest') }}"
 
 sahara_git_repo: https://opendev.org/openstack/sahara
 sahara_git_install_branch: master
-sahara_upper_constraints_url: "{{ requirements_git_url | default('https://releases.openstack.org/constraints/upper/' ~ requirements_git_install_branch | default('master')) }}"
+sahara_upper_constraints_url: >-
+  {{ requirements_git_url | default('https://releases.openstack.org/constraints/upper/' ~ requirements_git_install_branch | default('master')) }}
 sahara_git_constraints:
   - "--constraint {{ sahara_upper_constraints_url }}"
 
@@ -90,7 +95,11 @@ sahara_oslomsg_amqp1_enabled: "{{ sahara_oslomsg_rpc_transport == 'amqp' }}"
 
 ## Database info
 sahara_db_setup_host: "{{ openstack_db_setup_host | default('localhost') }}"
-sahara_db_setup_python_interpreter: "{{ openstack_db_setup_python_interpreter | default((sahara_db_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable'])) }}"
+sahara_db_setup_python_interpreter: >-
+  {{
+    openstack_db_setup_python_interpreter | default(
+      (sahara_db_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable']))
+  }}
 sahara_galera_address: "{{ galera_address | default('127.0.0.1') }}"
 sahara_galera_database: sahara
 sahara_galera_user: sahara
@@ -167,7 +176,8 @@ sahara_plugin_pip_packages:
 
 ## Cap the maximum number of threads / workers when a user value is unspecified.
 sahara_api_workers_max: 16
-sahara_api_workers: "{{ [[(ansible_facts['processor_vcpus']//ansible_facts['processor_threads_per_core'])|default(1), 1] | max * 2, sahara_api_workers_max] | min }}"
+sahara_api_workers: >-
+  {{ [[(ansible_facts['processor_vcpus'] // ansible_facts['processor_threads_per_core']) | default(1), 1] | max * 2, sahara_api_workers_max] | min }}
 
 sahara_task_executor: taskflow
 sahara_digest_algorithm: sha256
@@ -181,9 +191,9 @@ sahara_policy_dirs: policy.d
 ## Policy vars
 # Provide a list of access controls to update the default policy.json with. These changes will be merged
 # with the access controls in the default policy.json. E.g.
-#sahara_policy_overrides:
-#  "clusters:get_all": ""
-#  "clusters:create": ""
+# sahara_policy_overrides:
+#   "clusters:get_all": ""
+#   "clusters:create": ""
 
 sahara_service_in_ldap: "{{ service_ldap_backend_enabled | default(False) }}"
 
@@ -233,7 +243,7 @@ sahara_services:
 
 ## Sahara uWSGI settings
 sahara_wsgi_processes_max: 16
-sahara_wsgi_processes: "{{ [[ansible_facts['processor_vcpus']|default(1), 1] | max * 2, sahara_wsgi_processes_max] | min }}"
+sahara_wsgi_processes: "{{ [[ansible_facts['processor_vcpus'] | default(1), 1] | max * 2, sahara_wsgi_processes_max] | min }}"
 sahara_wsgi_threads: 1
 sahara_uwsgi_tls:
   crt: "{{ sahara_ssl_cert }}"
@@ -291,5 +301,5 @@ sahara_pki_install_certificates:
     mode: "0600"
 
 # Define user-provided SSL certificates
-#sahara_user_ssl_cert: <path to cert on ansible deployment host>
-#sahara_user_ssl_key: <path to cert on ansible deployment host>
+# sahara_user_ssl_cert: <path to cert on ansible deployment host>
+# sahara_user_ssl_key: <path to cert on ansible deployment host>
