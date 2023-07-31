@@ -27,7 +27,7 @@ proxy_user_role_names = {{ sahara_proxy_user_role_names }}
 transport_url = {{ sahara_oslomsg_rpc_transport }}://{% for host in sahara_oslomsg_rpc_servers.split(',') %}{{ sahara_oslomsg_rpc_userid }}:{{ sahara_oslomsg_rpc_password }}@{{ host }}:{{ sahara_oslomsg_rpc_port }}{% if not loop.last %},{% else %}/{{ sahara_oslomsg_rpc_vhost }}{% if sahara_oslomsg_rpc_use_ssl | bool %}?ssl=1&ssl_version={{ sahara_oslomsg_rpc_ssl_version }}&ssl_ca_file={{ sahara_oslomsg_rpc_ssl_ca_file }}{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
 
 [database]
-connection = mysql+pymysql://{{ sahara_galera_user }}:{{ sahara_container_mysql_password }}@{{ sahara_galera_address }}/{{ sahara_galera_database }}?charset=utf8{% if sahara_galera_use_ssl | bool %}&ssl_verify_cert=true{% if sahara_galera_ssl_ca_cert | length > 0 %}&ssl_ca={{ sahara_galera_ssl_ca_cert }}{% endif %}{% endif +%}
+connection = mysql+pymysql://{{ sahara_galera_user }}:{{ sahara_container_mysql_password }}@{{ sahara_galera_address }}:{{ sahara_galera_port }}/{{ sahara_galera_database }}?charset=utf8{% if sahara_galera_use_ssl | bool %}&ssl_verify_cert=true{% if sahara_galera_ssl_ca_cert | length > 0 %}&ssl_ca={{ sahara_galera_ssl_ca_cert }}{% endif %}{% endif +%}
 max_overflow = {{ sahara_db_max_overflow }}
 max_pool_size = {{ sahara_db_max_pool_size }}
 pool_timeout = {{ sahara_db_pool_timeout }}
