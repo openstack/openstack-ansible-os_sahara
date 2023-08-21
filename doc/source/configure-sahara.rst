@@ -85,13 +85,13 @@ Storage. To disable this functionality change the following variable to
       sahara_use_domain_for_proxy_users: True
 
 Also, is it possible to change which roles the trust users will receive
-in the proxy domain, by default it receives the ``_member_`` role.
+in the proxy domain, by default it receives the ``member`` role.
 
    In ``user_variables.yml``:
 
    .. code-block:: yaml
 
-      sahara_proxy_user_role_names: _member_
+      sahara_proxy_user_role_names: member
 
 .. warning::
     In the context of the proxy user, any roles that are required for
