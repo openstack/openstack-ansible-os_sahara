@@ -145,7 +145,7 @@ sahara_default_ntp_server: "pool.ntp.org"
 
 sahara_use_domain_for_proxy_users: True
 sahara_proxy_user_domain_name: sahara_proxy
-sahara_proxy_user_role_names: _member_
+sahara_proxy_user_role_names: member
 
 # Other plugins can be added to the system by simply extending the list `sahara_plugin_base`.
 sahara_plugin_base:
