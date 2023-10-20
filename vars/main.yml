@@ -18,6 +18,17 @@ _sahara_is_first_play_host: >-
     (sahara_services['sahara-api']['group'] in group_names and
       inventory_hostname == (groups[sahara_services['sahara-api']['group']] | intersect(ansible_play_hosts)) | first) | bool
   }}
+_sahara_oslomsg_rpc_vhost_conf: >-
+  {{
+    (sahara_oslomsg_rpc_vhost is string) | ternary(
+      sahara_oslomsg_rpc_vhost, sahara_oslomsg_rpc_vhost | selectattr('state', 'eq', 'present') | map(attribute='name') | first)
+  }}
+_sahara_oslomsg_notify_vhost_conf: >-
+  {{
+    (sahara_oslomsg_notify_vhost is string) | ternary(
+      sahara_oslomsg_notify_vhost, sahara_oslomsg_notify_vhost | selectattr('state', 'eq', 'present') | map(attribute='name') | first)
+  }}
+
 
 filtered_sahara_services: |-
   {% set services = [] %}
