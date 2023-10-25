@@ -2,7 +2,9 @@
   hosts: sahara_all
   user: root
   roles:
-    - { role: "os_sahara", tags: [ "os-sahara" ] }
+    - role: "os_sahara"
+      tags:
+        - "os-sahara"
   vars:
     external_lb_vip_address: 172.16.24.1
     internal_lb_vip_address: 192.168.0.1
