@@ -16,7 +16,7 @@
 - project:
     templates:
       - check-requirements
-      - openstack-ansible-deploy-aio_metal-jobs
+      # - openstack-ansible-deploy-aio_metal-jobs
       # Note: Uncomment the next template when distro installs are
       # ready for the 3 major distros:
       # - openstack-ansible-deploy-aio_distro_metal-jobs
